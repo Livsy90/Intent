@@ -15,7 +15,7 @@ struct AddNewHabit: View {
     @Environment(\.self) var env
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 15) {
                 TextField("Title", text: $habitModel.title)
                     .padding(.horizontal)

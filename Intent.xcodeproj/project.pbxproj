@@ -81,6 +81,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D62875D4290C53780022B437 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				D62875D5290C53830022B437 /* Home */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		D62875D5290C53830022B437 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D6B63DF7290BC1C50037DC5B /* ViewModel */,
+				D6B63DF6290BC1900037DC5B /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		D62875D6290C539A0022B437 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		D6694C2B290BACBC00429779 = {
 			isa = PBXGroup;
 			children = (
@@ -104,8 +128,8 @@
 		D6694C36290BACBD00429779 /* Intent */ = {
 			isa = PBXGroup;
 			children = (
-				D6B63DF7290BC1C50037DC5B /* ViewModel */,
-				D6B63DF6290BC1900037DC5B /* View */,
+				D62875D6290C539A0022B437 /* Coordinator */,
+				D62875D4290C53780022B437 /* Flows */,
 				D6694C37290BACBD00429779 /* IntentApp.swift */,
 				D6694C39290BACBD00429779 /* ContentView.swift */,
 				D6694C3B290BACBF00429779 /* Assets.xcassets */,

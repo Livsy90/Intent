@@ -36,10 +36,6 @@ final class HabitViewModel: ObservableObject {
 
     // MARK: Adding Habit to Database
     
-    func reset() {
-        resetData()
-    }
-    
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
         
         // MARK: Editing Data
@@ -191,7 +187,7 @@ final class HabitViewModel: ObservableObject {
     
     // MARK: Erasing Content
     
-    private func resetData() {
+    func reset() {
         title = ""
         habitColor = "Card-1"
         weekDays = []
