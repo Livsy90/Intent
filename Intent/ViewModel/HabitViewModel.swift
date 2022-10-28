@@ -9,10 +9,13 @@ import SwiftUI
 import CoreData
 import UserNotifications
 
-class HabitViewModel: ObservableObject {
-    // MARK: New Habit Properties
-    
+final class HabitViewModel: ObservableObject {
+        
+    ///New Habit Properties
     @Published var addNewHabit: Bool = false
+    
+    /// Editing Habit
+    @Published var editHabit: Habit?
     
     @Published var title: String = ""
     @Published var habitColor: String = "Card-1"
@@ -21,37 +24,33 @@ class HabitViewModel: ObservableObject {
     @Published var remainderText: String = ""
     @Published var remainderDate: Date = Date()
     
-    // MARK: Remainder Time Picker
-    @Published var showTimePicker: Bool = false
+    /// Remainder Time Picker
+    @Published  var showTimePicker: Bool = false
     
-    // MARK: Editing Habit
-    @Published var editHabit: Habit?
-    
-    // MARK: Notification Access Status
-    @Published var notificationAccess: Bool = false
+    /// Notification Access Status
+    @Published  var notificationAccess: Bool = false
     
     init(){
         requestNotificationAccess()
     }
+
+    // MARK: Adding Habit to Database
     
-    func requestNotificationAccess(){
-        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in
-            DispatchQueue.main.async {
-                self.notificationAccess = status
-            }
-        }
+    func reset() {
+        resetData()
     }
     
-    // MARK: Adding Habit to Database
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
+        
         // MARK: Editing Data
         
         var habit: Habit
         if let editHabit = editHabit {
             habit = editHabit
+            
             // Removing All Pending Notifications
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
-        }else{
+        } else {
             habit = Habit(context: context)
         }
         habit.title = title
@@ -63,26 +62,32 @@ class HabitViewModel: ObservableObject {
         habit.dateAdded = Date()
         habit.notificationIDs = []
         
-        if isRemainderOn{
+        if isRemainderOn {
+            
             // MARK: Scheduling Notifications
             
             if let ids = try? await scheduleNotification() {
                 habit.notificationIDs = ids
-                if let _ = try? context.save(){
+                if let _ = try? context.save() {
                     return true
                 }
+                
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
             }
-        }else{
+        } else {
+            
             // MARK: Adding Data
+            
             if let _ = try? context.save() {
                 return true
             }
         }
+        
       return false
     }
     
     // MARK: Adding Notifications
+    
     func scheduleNotification() async throws -> [String] {
         let content = UNMutableNotificationContent()
         content.title = "Habit Remainder"
@@ -97,6 +102,7 @@ class HabitViewModel: ObservableObject {
         // MARK: Scheduling Notification
         
         for weekDay in weekDays {
+            
             // UNIQUE ID FOR EACH NOTIFICATION
             let id = UUID().uuidString
             let hour = calendar.component(.hour, from: remainderDate)
@@ -104,7 +110,9 @@ class HabitViewModel: ObservableObject {
             let day = weekdaySymbols.firstIndex { currentDay in
                 return currentDay == weekDay
             } ?? -1
+            
             // MARK: Since Week Day Starts from 1-7
+            
             // Thus Adding +1 to Index
             if day != -1 {
                 var components = DateComponents()
@@ -113,9 +121,11 @@ class HabitViewModel: ObservableObject {
                 components.weekday = day + 1
                 
                 // MARK: Thus this will Trigger Notification on Each Selected Day
+                
                 let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
                 
                 // MARK: Notification Request
+                
                 let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
                 
                 // ADDING ID
@@ -128,24 +138,16 @@ class HabitViewModel: ObservableObject {
         return notificationIDs
     }
     
-    // MARK: Erasing Content
-    func resetData(){
-        title = ""
-        habitColor = "Card-1"
-        weekDays = []
-        isRemainderOn = false
-        remainderDate = Date()
-        remainderText = ""
-        editHabit = nil
-    }
-    
     // MARK: Deleting Habit From Database
-    func deleteHabit(context: NSManagedObjectContext)->Bool{
+    
+    func deleteHabit(context: NSManagedObjectContext) -> Bool {
         if let editHabit = editHabit {
             if editHabit.isRemainderOn {
+                
                 // Removing All Pending Notifications
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
             }
+            
             context.delete(editHabit)
             if let _ = try? context.save(){
                 return true
@@ -156,7 +158,8 @@ class HabitViewModel: ObservableObject {
     }
     
     // MARK: Restoring Edit Data
-    func restoreEditData(){
+    
+    func restoreEditData() {
         if let editHabit = editHabit {
             title = editHabit.title ?? ""
             habitColor = editHabit.color ?? "Card-1"
@@ -168,12 +171,34 @@ class HabitViewModel: ObservableObject {
     }
     
     // MARK: Done Button Status
+    
     func doneStatus() -> Bool {
         let remainderStatus = isRemainderOn ? remainderText == "" : false
         
-        if title == "" || weekDays.isEmpty || remainderStatus{
+        if title == "" || weekDays.isEmpty || remainderStatus {
             return false
         }
         return true
     }
+    
+    private func requestNotificationAccess() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in
+            DispatchQueue.main.async {
+                self.notificationAccess = status
+            }
+        }
+    }
+    
+    // MARK: Erasing Content
+    
+    private func resetData() {
+        title = ""
+        habitColor = "Card-1"
+        weekDays = []
+        isRemainderOn = false
+        remainderDate = Date()
+        remainderText = ""
+        editHabit = nil
+    }
+    
 }

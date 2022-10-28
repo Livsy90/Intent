@@ -8,20 +8,24 @@
 import SwiftUI
 
 struct AddNewHabit: View {
+    
     @EnvironmentObject var habitModel: HabitViewModel
-    // MARK: Environment Values
+    
+    /// Environment Values
     @Environment(\.self) var env
+    
     var body: some View {
-        NavigationView{
-            VStack(spacing: 15){
+        NavigationView {
+            VStack(spacing: 15) {
                 TextField("Title", text: $habitModel.title)
                     .padding(.horizontal)
-                    .padding(.vertical,10)
+                    .padding(.vertical, 10)
                     .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                 
                 // MARK: Habit Color Picker
+                
                 HStack(spacing: 0){
-                    ForEach(1...7,id: \.self){index in
+                    ForEach(1...7, id: \.self) { index in
                         let color = "Card-\(index)"
                         Circle()
                             .fill(Color(color))
@@ -46,6 +50,7 @@ struct AddNewHabit: View {
                 Divider()
                 
                 // MARK: Frequency Selection
+                
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Frequency")
                         .font(.callout.bold())
@@ -55,7 +60,8 @@ struct AddNewHabit: View {
                             let index = habitModel.weekDays.firstIndex { value in
                                 return value == day
                             } ?? -1
-                            // MARK: Limiting to First 2 Letters
+                            
+                            // Limiting to First 2 Letters
                             Text(day.prefix(2))
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
@@ -82,7 +88,7 @@ struct AddNewHabit: View {
                 Divider()
                     .padding(.vertical,10)
                 
-                // Hiding If Notification Access is Rejected
+                // Hiding if Notification access is rejected
                 HStack{
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Remainder")
@@ -99,24 +105,24 @@ struct AddNewHabit: View {
                 }
                 .opacity(habitModel.notificationAccess ? 1 : 0)
                 
-                HStack(spacing: 12){
+                HStack(spacing: 12) {
                     Label {
                         Text(habitModel.remainderDate.formatted(date: .omitted, time: .shortened))
                     } icon: {
                         Image(systemName: "clock")
                     }
                     .padding(.horizontal)
-                    .padding(.vertical,12)
+                    .padding(.vertical, 12)
                     .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                     .onTapGesture {
-                        withAnimation{
+                        withAnimation {
                             habitModel.showTimePicker.toggle()
                         }
                     }
                     
                     TextField("Remainder Text", text: $habitModel.remainderText)
                         .padding(.horizontal)
-                        .padding(.vertical,10)
+                        .padding(.vertical, 10)
                         .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                 }
                 .frame(height: habitModel.isRemainderOn ? nil : 0)
@@ -139,6 +145,7 @@ struct AddNewHabit: View {
                 }
                 
                 // MARK: Delete Button
+                
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         if habitModel.deleteHabit(context: env.managedObjectContext){
@@ -152,9 +159,9 @@ struct AddNewHabit: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done"){
-                        Task{
-                            if await habitModel.addHabbit(context: env.managedObjectContext){
+                    Button("Done") {
+                        Task {
+                            if await habitModel.addHabbit(context: env.managedObjectContext) {
                                 env.dismiss()
                             }
                         }

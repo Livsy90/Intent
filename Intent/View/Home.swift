@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct Home: View {
+    
     @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], predicate: nil, animation: .easeInOut) var habits: FetchedResults<Habit>
     @StateObject var habitModel: HabitViewModel = .init()
     
     var body: some View {
-        VStack(spacing: 0){
+        VStack(spacing: .zero){
             Text("Habits")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity)
@@ -29,12 +30,13 @@ struct Home: View {
             
             // MAKING ADD BUTTON CENTER WHEN HABITS EMPTY
             ScrollView(habits.isEmpty ? .init() : .vertical, showsIndicators: false) {
-                VStack(spacing: 15){
-                    ForEach(habits){habit in
-                        HabitCardView(habit: habit)
+                VStack(spacing: 15) {
+                    ForEach(habits) {
+                        HabitCardView(habit: $0)
                     }
                     
                     // MARK: Add Habit Button
+                    
                     Button {
                         habitModel.addNewHabit.toggle()
                     } label: {
@@ -46,7 +48,7 @@ struct Home: View {
                         .font(.callout.bold())
                         .foregroundColor(.primary)
                     }
-                    .padding(.top,15)
+                    .padding(.top, 15)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
                 .padding(.vertical)
@@ -55,8 +57,10 @@ struct Home: View {
         .frame(maxHeight: .infinity,alignment: .top)
         .padding()
         .sheet(isPresented: $habitModel.addNewHabit) {
+            
             // MARK: Erasing All Existing Content
-            habitModel.resetData()
+            
+            habitModel.reset()
         } content: {
             AddNewHabit()
                 .environmentObject(habitModel)
@@ -64,8 +68,9 @@ struct Home: View {
     }
     
     // MARK: Habit Card View
+    
     @ViewBuilder
-    func HabitCardView(habit: Habit)->some View{
+    func HabitCardView(habit: Habit) -> some View{
         VStack(spacing: 6){
             HStack{
                 Text(habit.title ?? "")
@@ -86,9 +91,10 @@ struct Home: View {
                     .font(.caption)
                     .foregroundColor(.gray)
             }
-            .padding(.horizontal,10)
+            .padding(.horizontal, 10)
             
             // MARK: Displaying Current Week and Marking Active Dates of Habit
+            
             let calendar = Calendar.current
             let currentWeek = calendar.dateInterval(of: .weekOfMonth, for: Date())
             let symbols = calendar.weekdaySymbols
@@ -96,15 +102,16 @@ struct Home: View {
             let activeWeekDays = habit.weekDays ?? []
             let activePlot = symbols.indices.compactMap { index -> (String,Date) in
                 let currentDate = calendar.date(byAdding: .day, value: index, to: startDate)
-                return (symbols[index],currentDate!)
+                return (symbols[index], currentDate ?? Date())
             }
             
-            HStack(spacing: 0){
-                ForEach(activePlot.indices,id: \.self){index in
+            HStack(spacing: .zero) {
+                ForEach(activePlot.indices,id: \.self) { index in
                     let item = activePlot[index]
                     
                     VStack(spacing: 6){
-                        // MARK: Limiting to First 3 letters
+                        
+                        // Limiting to First 3 letters
                         Text(item.0.prefix(3))
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -127,10 +134,10 @@ struct Home: View {
                     .frame(maxWidth: .infinity)
                 }
             }
-            .padding(.top,15)
+            .padding(.top, 15)
         }
         .padding(.vertical)
-        .padding(.horizontal,6)
+        .padding(.horizontal, 6)
         .background{
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color("TFBG").opacity(0.5))
@@ -143,13 +150,14 @@ struct Home: View {
         }
     }
     
-    // MARK: Formatting Date
-    func getDate(date: Date)->String{
+    /// Formatting Date
+    private func getDate(date: Date) -> String{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         
         return formatter.string(from: date)
     }
+    
 }
 
 struct Home_Previews: PreviewProvider {
