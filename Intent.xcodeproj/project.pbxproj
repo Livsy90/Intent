@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D6694C38290BACBD00429779 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C37290BACBD00429779 /* IntentApp.swift */; };
 		D6694C3A290BACBD00429779 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C39290BACBD00429779 /* ContentView.swift */; };
 		D6694C3C290BACBF00429779 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6694C3B290BACBF00429779 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D6694C34290BACBD00429779 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6694C37290BACBD00429779 /* IntentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentApp.swift; sourceTree = "<group>"; };
 		D6694C39290BACBD00429779 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,10 +94,19 @@
 		D62875D5290C53830022B437 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D64407A0290D3A050081ADB4 /* Router */,
 				D6B63DF7290BC1C50037DC5B /* ViewModel */,
 				D6B63DF6290BC1900037DC5B /* View */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		D64407A0290D3A050081ADB4 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		D6694C2B290BACBC00429779 = {
@@ -309,6 +320,7 @@
 				D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */,
 				D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */,
 				D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */,
+				D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */,
 				D6694C3A290BACBD00429779 /* ContentView.swift in Sources */,
 				D6694C38290BACBD00429779 /* IntentApp.swift in Sources */,
 			);

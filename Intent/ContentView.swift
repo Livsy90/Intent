@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var router: HomeRouter = HomeRouter()
     
     var body: some View {
-        Home()
-            .preferredColorScheme(.dark)
+        router.homeView()
     }
-    
 }
 
 
