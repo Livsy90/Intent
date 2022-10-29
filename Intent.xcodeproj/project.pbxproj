@@ -17,6 +17,7 @@
 		D6694C4E290BACC000429779 /* IntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C4D290BACC000429779 /* IntentTests.swift */; };
 		D6694C58290BACC000429779 /* IntentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C57290BACC000429779 /* IntentUITests.swift */; };
 		D6694C5A290BACC000429779 /* IntentUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C59290BACC000429779 /* IntentUITestsLaunchTests.swift */; };
+		D671335F290D983100AE460C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671335E290D983100AE460C /* Color.swift */; };
 		D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFA290BC1F80037DC5B /* Home.swift */; };
 		D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */; };
 		D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */; };
@@ -53,6 +54,7 @@
 		D6694C53290BACC000429779 /* IntentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6694C57290BACC000429779 /* IntentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITests.swift; sourceTree = "<group>"; };
 		D6694C59290BACC000429779 /* IntentUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D671335E290D983100AE460C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		D6B63DFA290BC1F80037DC5B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewModel.swift; sourceTree = "<group>"; };
 		D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHabit.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		D6694C36290BACBD00429779 /* Intent */ = {
 			isa = PBXGroup;
 			children = (
+				D671335D290D982600AE460C /* Models */,
 				D62875D4290C53780022B437 /* Flows */,
 				D6694C37290BACBD00429779 /* IntentApp.swift */,
 				D6694C39290BACBD00429779 /* ContentView.swift */,
@@ -166,6 +169,14 @@
 				D6694C59290BACC000429779 /* IntentUITestsLaunchTests.swift */,
 			);
 			path = IntentUITests;
+			sourceTree = "<group>";
+		};
+		D671335D290D982600AE460C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D671335E290D983100AE460C /* Color.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D6B63DF6290BC1900037DC5B /* View */ = {
@@ -316,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6694C41290BACBF00429779 /* Persistence.swift in Sources */,
+				D671335F290D983100AE460C /* Color.swift in Sources */,
 				D6694C44290BACBF00429779 /* Intent.xcdatamodeld in Sources */,
 				D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */,
 				D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */,

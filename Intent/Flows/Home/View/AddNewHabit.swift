@@ -26,7 +26,7 @@ struct AddNewHabit: View {
                 
                 HStack(spacing: 0) {
                     ForEach(1...7, id: \.self) { index in
-                        let color = "Card-\(index)"
+                        let color = Colors.Card.color(for: index)
                         Circle()
                             .fill(Color(color))
                             .frame(width: 30, height: 30)
@@ -61,11 +61,10 @@ struct AddNewHabit: View {
                                 return value == day
                             } ?? -1
                             
-                            // Limiting to First 2 Letters
-                            Text(day.prefix(2))
+                            Text(day.prefix(3).capitalized)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical,12)
+                                .padding(.vertical, 12)
                                 .foregroundColor(index != -1 ? .white : .primary)
                                 .background {
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)

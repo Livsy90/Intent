@@ -84,7 +84,7 @@ struct Home: View {
                 
                 Image(systemName: "bell.badge.fill")
                     .font(.callout)
-                    .foregroundColor(Color(habit.color ?? "Card-1"))
+                    .foregroundColor(Color(habit.color ?? Colors.Card.raspberrySunset.rawValue))
                     .scaleEffect(0.9)
                     .opacity(habit.isRemainderOn ? 1 : 0)
                 
@@ -115,7 +115,7 @@ struct Home: View {
                     
                     VStack(spacing: 6) {
                         
-                        Text(item.weekDay.prefix(3))
+                        Text(item.weekDay.prefix(3).capitalized)
                             .font(.caption)
                             .foregroundColor(.gray)
                         
@@ -130,7 +130,7 @@ struct Home: View {
                             .foregroundColor(status ? .white : .primary)
                             .background {
                                 Circle()
-                                    .fill(Color(habit.color ?? "Card-1"))
+                                    .fill(Color(habit.color ?? Colors.Card.raspberrySunset.rawValue))
                                     .opacity(status ? 1 : 0)
                             }
                     }

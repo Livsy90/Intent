@@ -20,7 +20,7 @@ final class HabitViewModel: ObservableObject {
     @Published var editHabit: Habit?
     
     @Published var title: String = ""
-    @Published var habitColor: String = "Card-1"
+    @Published var habitColor: String = Colors.Card.raspberrySunset.rawValue
     @Published var weekDays: [String] = []
     @Published var isRemainderOn: Bool = false
     @Published var remainderText: String = ""
@@ -160,7 +160,7 @@ final class HabitViewModel: ObservableObject {
     func restoreEditData() {
         if let editHabit = editHabit {
             title = editHabit.title ?? ""
-            habitColor = editHabit.color ?? "Card-1"
+            habitColor = editHabit.color ?? Colors.Card.raspberrySunset.rawValue
             weekDays = editHabit.weekDays ?? []
             isRemainderOn = editHabit.isRemainderOn
             remainderDate = editHabit.notificationDate ?? Date()
@@ -172,7 +172,7 @@ final class HabitViewModel: ObservableObject {
     
     func reset() {
         title = ""
-        habitColor = "Card-1"
+        habitColor = Colors.Card.raspberrySunset.rawValue
         weekDays = []
         isRemainderOn = false
         remainderDate = Date()
