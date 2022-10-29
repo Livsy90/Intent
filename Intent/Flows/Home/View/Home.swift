@@ -91,7 +91,8 @@ struct Home: View {
                 Spacer()
                 
                 let count = (habit.weekDays?.count ?? 0)
-                Text(count == 7 ? "Everyday" : "\(count) times a week")
+                let timesText = count == 1 ? "time" : "times"
+                Text(count == 7 ? "Everyday" : "\(count) \(timesText) a week")
                     .font(.caption)
                     .foregroundColor(.gray)
             }

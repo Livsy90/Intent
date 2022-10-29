@@ -88,45 +88,8 @@ struct AddNewHabit: View {
                     .padding(.vertical,10)
                 
                 // Hiding if Notification access is rejected
-                HStack{
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Remainder")
-                            .fontWeight(.semibold)
-                        
-                        Text("Just notification")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                    .frame(maxWidth: .infinity,alignment: .leading)
-                    
-                    Toggle(isOn: $habitModel.isRemainderOn) {}
-                        .labelsHidden()
-                }
-                .opacity(habitModel.notificationAccess ? 1 : 0)
-                
-                HStack(spacing: 12) {
-                    Label {
-                        Text(habitModel.remainderDate.formatted(date: .omitted, time: .shortened))
-                    } icon: {
-                        Image(systemName: "clock")
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .onTapGesture {
-                        withAnimation {
-                            habitModel.showTimePicker.toggle()
-                        }
-                    }
-                    
-                    TextField("Remainder Text", text: $habitModel.remainderText)
-                        .padding(.horizontal)
-                        .padding(.vertical, 10)
-                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                }
-                .frame(height: habitModel.isRemainderOn ? nil : 0)
-                .opacity(habitModel.isRemainderOn ? 1 : 0)
-                .opacity(habitModel.notificationAccess ? 1 : 0)
+                RemainderSwitchView()
+                RemainderTimeView()
             }
             .animation(.easeInOut, value: habitModel.isRemainderOn)
             .frame(maxHeight: .infinity,alignment: .top)
@@ -195,6 +158,52 @@ struct AddNewHabit: View {
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    private func RemainderSwitchView() -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Remainder")
+                    .fontWeight(.semibold)
+                
+                Text("Just notification")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            .frame(maxWidth: .infinity,alignment: .leading)
+            
+            Toggle(isOn: $habitModel.isRemainderOn) {}
+                .labelsHidden()
+        }
+        .opacity(habitModel.notificationAccess ? 1 : 0)
+    }
+    
+    @ViewBuilder
+    private func RemainderTimeView() -> some View {
+        HStack(spacing: 12) {
+            Label {
+                Text(habitModel.remainderDate.formatted(date: .omitted, time: .shortened))
+            } icon: {
+                Image(systemName: "clock")
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+            .onTapGesture {
+                withAnimation {
+                    habitModel.showTimePicker.toggle()
+                }
+            }
+            
+            TextField("Remainder Text", text: $habitModel.remainderText)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+        }
+        .frame(height: habitModel.isRemainderOn ? nil : 0)
+        .opacity(habitModel.isRemainderOn ? 1 : 0)
+        .opacity(habitModel.notificationAccess ? 1 : 0)
     }
 }
 
