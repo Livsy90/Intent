@@ -7,10 +7,15 @@
 
 import SwiftUI
 
+protocol HomeScreenRouter: AnyObject {
+    func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit
+}
+
 struct Home: View {
     
     @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], animation: .easeInOut) var habits: FetchedResults<Habit>
     @StateObject var habitModel: HabitViewModel = .init()
+    @State var router: HomeScreenRouter?
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -28,9 +33,7 @@ struct Home: View {
                 }
                 .padding(.bottom,10)
             
-            // MAKING ADD BUTTON CENTER WHEN HABITS EMPTY
             VStack {
-                
                 ScrollView(habits.isEmpty ? .init() : .vertical, showsIndicators: false) {
                     LazyVGrid(columns: [GridItem(.flexible())], spacing: 15) {
                         ForEach(habits) {
@@ -64,8 +67,7 @@ struct Home: View {
             
             habitModel.reset()
         } content: {
-            AddNewHabit()
-                .environmentObject(habitModel)
+            router?.addHabitScreen(viewModel: habitModel)
         }
     }
     

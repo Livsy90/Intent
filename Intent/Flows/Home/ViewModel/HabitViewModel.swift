@@ -185,10 +185,11 @@ final class HabitViewModel: ObservableObject {
     func doneStatus() -> Bool {
         let remainderStatus = isRemainderOn ? remainderText == "" : false
         
-        if title == "" || weekDays.isEmpty || remainderStatus {
-            return false
+        guard title.isEmpty || weekDays.isEmpty || remainderStatus else {
+            return true
         }
-        return true
+        
+        return false
     }
     
     private func requestNotificationAccess() {

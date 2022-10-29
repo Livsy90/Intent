@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddNewHabit: View {
     
-    @EnvironmentObject var habitModel: HabitViewModel
+    @ObservedObject var habitModel: HabitViewModel
     
     /// Environment Values
     @Environment(\.self) var env
@@ -201,8 +201,7 @@ struct AddNewHabit: View {
 
 struct AddNewHabit_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewHabit()
-            .environmentObject(HabitViewModel())
+        AddNewHabit(habitModel: HabitViewModel())
             .preferredColorScheme(.dark)
     }
 }
