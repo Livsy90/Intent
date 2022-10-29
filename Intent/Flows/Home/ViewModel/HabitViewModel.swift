@@ -10,6 +10,8 @@ import CoreData
 import UserNotifications
 
 final class HabitViewModel: ObservableObject {
+    
+    var onAddHabit: (() -> Void)?
         
     ///New Habit Properties
     @Published var addNewHabit: Bool = false

@@ -56,7 +56,7 @@ struct AddNewHabit: View {
                         .font(.callout.bold())
                     let weekDays = Calendar.current.weekdaySymbols
                     HStack(spacing: 10){
-                        ForEach(weekDays,id: \.self){day in
+                        ForEach(weekDays,id: \.self) { day in
                             let index = habitModel.weekDays.firstIndex { value in
                                 return value == day
                             } ?? -1
@@ -148,7 +148,7 @@ struct AddNewHabit: View {
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        if habitModel.deleteHabit(context: env.managedObjectContext){
+                        if habitModel.deleteHabit(context: env.managedObjectContext) {
                             env.dismiss()
                         }
                     } label: {

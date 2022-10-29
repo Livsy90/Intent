@@ -29,30 +29,32 @@ struct Home: View {
                 .padding(.bottom,10)
             
             // MAKING ADD BUTTON CENTER WHEN HABITS EMPTY
-            ScrollView(habits.isEmpty ? .init() : .vertical, showsIndicators: false) {
-                VStack(spacing: 15) {
-                    ForEach(habits) {
-                        HabitCardView(habit: $0)
-                    }
-                    
-                    // MARK: Add Habit Button
-                    
-                    Button {
-                        habitModel.addNewHabit.toggle()
-                    } label: {
-                        Label {
-                            Text("New habit")
-                        } icon: {
-                            Image(systemName: "plus.circle")
+            VStack {
+                
+                ScrollView(habits.isEmpty ? .init() : .vertical, showsIndicators: false) {
+                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 15) {
+                        ForEach(habits) {
+                            HabitCardView(habit: $0)
                         }
-                        .font(.callout.bold())
-                        .foregroundColor(.primary)
+                        .padding(.vertical)
                     }
-                    .padding(.top, 15)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
-                .padding(.vertical)
+                
+                Button {
+                    habitModel.addNewHabit.toggle()
+                } label: {
+                    Label {
+                        Text("New habit")
+                    } icon: {
+                        Image(systemName: "plus.circle")
+                    }
+                    .font(.callout.bold())
+                    .foregroundColor(.primary)
+                }
+                .padding(.top, 15)
+                .frame(maxWidth: .infinity, maxHeight: 20, alignment: .center)
             }
+            
         }
         .frame(maxHeight: .infinity,alignment: .top)
         .padding()
@@ -100,27 +102,26 @@ struct Home: View {
             let symbols = calendar.weekdaySymbols
             let startDate = currentWeek?.start ?? Date()
             let activeWeekDays = habit.weekDays ?? []
-            let activePlot = symbols.indices.compactMap { index -> (String,Date) in
+            let activePlot: [(weekDay: String, date: Date)] = symbols.indices.compactMap { index -> (String, Date) in
                 let currentDate = calendar.date(byAdding: .day, value: index, to: startDate)
                 return (symbols[index], currentDate ?? Date())
             }
             
             HStack(spacing: .zero) {
-                ForEach(activePlot.indices,id: \.self) { index in
+                ForEach(activePlot.indices, id: \.self) { index in
                     let item = activePlot[index]
                     
                     VStack(spacing: 6){
                         
-                        // Limiting to First 3 letters
-                        Text(item.0.prefix(3))
+                        Text(item.weekDay.prefix(3))
                             .font(.caption)
                             .foregroundColor(.gray)
                         
                         let status = activeWeekDays.contains { day in
-                            return day == item.0
+                            return day == item.weekDay
                         }
                         
-                        Text(getDate(date: item.1))
+                        Text(getDate(date: item.date))
                             .font(.system(size: 14))
                             .fontWeight(.semibold)
                             .padding(8)
