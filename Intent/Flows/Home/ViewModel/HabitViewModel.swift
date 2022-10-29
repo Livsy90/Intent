@@ -95,7 +95,7 @@ final class HabitViewModel: ObservableObject {
         // Scheduled Ids
         var notificationIDs: [String] = []
         let calendar = Calendar.current
-        let weekdaySymbols: [String] = calendar.weekdaySymbols
+        let weekdaySymbols: [String] = calendar.shortWeekdaySymbols
         
         // MARK: Scheduling Notification
         

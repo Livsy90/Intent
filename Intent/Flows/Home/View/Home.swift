@@ -101,7 +101,7 @@ struct Home: View {
             
             let calendar = Calendar.current
             let currentWeek = calendar.dateInterval(of: .weekOfMonth, for: Date())
-            let symbols = calendar.weekdaySymbols
+            let symbols = calendar.shortWeekdaySymbols
             let startDate = currentWeek?.start ?? Date()
             let activeWeekDays = habit.weekDays ?? []
             let activePlot: [(weekDay: String, date: Date)] = symbols.indices.compactMap { index -> (String, Date) in
@@ -115,7 +115,7 @@ struct Home: View {
                     
                     VStack(spacing: 6) {
                         
-                        Text(item.weekDay.prefix(3).capitalized)
+                        Text(item.weekDay.capitalized)
                             .font(.caption)
                             .foregroundColor(.gray)
                         
@@ -143,7 +143,7 @@ struct Home: View {
         .padding(.horizontal, 6)
         .background{
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color("TFBG").opacity(0.5))
+                .fill(Colors.Background.semiDark)
         }
         .onTapGesture {
             // MARK: Editing Habit

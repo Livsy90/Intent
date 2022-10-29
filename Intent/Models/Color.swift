@@ -5,9 +5,15 @@
 //  Created by Livsy on 29.10.2022.
 //
 
-import UIKit
+import SwiftUI
 
 enum Colors {
+    
+    enum Background {
+        static let light = Color("inputBackground")
+        static let semiDark = Color("darkBackground").opacity(0.5)
+        static let dark = Color("darkBackground")
+    }
     
     enum Card: String, CaseIterable {
         case blueRose

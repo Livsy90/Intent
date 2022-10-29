@@ -20,7 +20,7 @@ struct AddNewHabit: View {
                 TextField("Title", text: $habitModel.title)
                     .padding(.horizontal)
                     .padding(.vertical, 10)
-                    .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                 
                 // MARK: Habit Color Picker
                 
@@ -54,21 +54,21 @@ struct AddNewHabit: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Frequency")
                         .font(.callout.bold())
-                    let weekDays = Calendar.current.weekdaySymbols
+                    let weekDays = Calendar.current.shortWeekdaySymbols
                     HStack(spacing: 10) {
-                        ForEach(weekDays,id: \.self) { day in
+                        ForEach(weekDays, id: \.self) { day in
                             let index = habitModel.weekDays.firstIndex { value in
-                                return value == day
+                                return value.caseInsensitiveCompare(day) == .orderedSame
                             } ?? -1
                             
-                            Text(day.prefix(3).capitalized)
+                            Text(day.capitalized)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .foregroundColor(index != -1 ? .white : .primary)
                                 .background {
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .fill(index != -1 ? Color(habitModel.habitColor) : Color("TFBG").opacity(0.4))
+                                        .fill(index != -1 ? Color(habitModel.habitColor) : Colors.Background.light)
                                 }
                                 .onTapGesture {
                                     withAnimation {
@@ -112,7 +112,7 @@ struct AddNewHabit: View {
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 12)
-                    .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                     .onTapGesture {
                         withAnimation {
                             habitModel.showTimePicker.toggle()
@@ -122,7 +122,7 @@ struct AddNewHabit: View {
                     TextField("Remainder Text", text: $habitModel.remainderText)
                         .padding(.horizontal)
                         .padding(.vertical, 10)
-                        .background(Color("TFBG").opacity(0.4),in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                 }
                 .frame(height: habitModel.isRemainderOn ? nil : 0)
                 .opacity(habitModel.isRemainderOn ? 1 : 0)
@@ -189,7 +189,7 @@ struct AddNewHabit: View {
                         .padding()
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(Color("TFBG"))
+                                .fill(Colors.Background.dark)
                         }
                         .padding()
                 }
