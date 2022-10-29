@@ -9,11 +9,11 @@ import SwiftUI
 
 struct Home: View {
     
-    @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], predicate: nil, animation: .easeInOut) var habits: FetchedResults<Habit>
+    @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], animation: .easeInOut) var habits: FetchedResults<Habit>
     @StateObject var habitModel: HabitViewModel = .init()
     
     var body: some View {
-        VStack(spacing: .zero){
+        VStack(spacing: .zero) {
             Text("Habits")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity)
@@ -73,7 +73,7 @@ struct Home: View {
     
     @ViewBuilder
     func HabitCardView(habit: Habit) -> some View{
-        VStack(spacing: 6){
+        VStack(spacing: 6) {
             HStack{
                 Text(habit.title ?? "")
                     .font(.callout)
@@ -111,7 +111,7 @@ struct Home: View {
                 ForEach(activePlot.indices, id: \.self) { index in
                     let item = activePlot[index]
                     
-                    VStack(spacing: 6){
+                    VStack(spacing: 6) {
                         
                         Text(item.weekDay.prefix(3))
                             .font(.caption)
@@ -126,7 +126,7 @@ struct Home: View {
                             .fontWeight(.semibold)
                             .padding(8)
                             .foregroundColor(status ? .white : .primary)
-                            .background{
+                            .background {
                                 Circle()
                                     .fill(Color(habit.color ?? "Card-1"))
                                     .opacity(status ? 1 : 0)

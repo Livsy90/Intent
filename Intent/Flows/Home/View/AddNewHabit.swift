@@ -24,21 +24,21 @@ struct AddNewHabit: View {
                 
                 // MARK: Habit Color Picker
                 
-                HStack(spacing: 0){
+                HStack(spacing: 0) {
                     ForEach(1...7, id: \.self) { index in
                         let color = "Card-\(index)"
                         Circle()
                             .fill(Color(color))
                             .frame(width: 30, height: 30)
                             .overlay(content: {
-                                if color == habitModel.habitColor{
+                                if color == habitModel.habitColor {
                                     Image(systemName: "checkmark")
                                         .font(.caption.bold())
                                         .foregroundColor(.white)
                                 }
                             })
                             .onTapGesture {
-                                withAnimation{
+                                withAnimation {
                                     habitModel.habitColor = color
                                 }
                             }
@@ -55,7 +55,7 @@ struct AddNewHabit: View {
                     Text("Frequency")
                         .font(.callout.bold())
                     let weekDays = Calendar.current.weekdaySymbols
-                    HStack(spacing: 10){
+                    HStack(spacing: 10) {
                         ForEach(weekDays,id: \.self) { day in
                             let index = habitModel.weekDays.firstIndex { value in
                                 return value == day
@@ -67,15 +67,15 @@ struct AddNewHabit: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical,12)
                                 .foregroundColor(index != -1 ? .white : .primary)
-                                .background{
+                                .background {
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                                         .fill(index != -1 ? Color(habitModel.habitColor) : Color("TFBG").opacity(0.4))
                                 }
                                 .onTapGesture {
-                                    withAnimation{
+                                    withAnimation {
                                         if index != -1{
                                             habitModel.weekDays.remove(at: index)
-                                        }else{
+                                        } else {
                                             habitModel.weekDays.append(day)
                                         }
                                     }
@@ -179,7 +179,7 @@ struct AddNewHabit: View {
                         .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
                         .onTapGesture {
-                            withAnimation{
+                            withAnimation {
                                 habitModel.showTimePicker.toggle()
                             }
                         }
@@ -188,7 +188,7 @@ struct AddNewHabit: View {
                         .datePickerStyle(.wheel)
                         .labelsHidden()
                         .padding()
-                        .background{
+                        .background {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color("TFBG"))
                         }

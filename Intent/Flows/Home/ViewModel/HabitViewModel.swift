@@ -32,7 +32,7 @@ final class HabitViewModel: ObservableObject {
     /// Notification Access Status
     @Published  var notificationAccess: Bool = false
     
-    init(){
+    init() {
         requestNotificationAccess()
     }
 
@@ -147,7 +147,7 @@ final class HabitViewModel: ObservableObject {
             }
             
             context.delete(editHabit)
-            if let _ = try? context.save(){
+            if let _ = try? context.save() {
                 return true
             }
         }
@@ -168,6 +168,18 @@ final class HabitViewModel: ObservableObject {
         }
     }
     
+    // MARK: Erasing Content
+    
+    func reset() {
+        title = ""
+        habitColor = "Card-1"
+        weekDays = []
+        isRemainderOn = false
+        remainderDate = Date()
+        remainderText = ""
+        editHabit = nil
+    }
+    
     // MARK: Done Button Status
     
     func doneStatus() -> Bool {
@@ -185,18 +197,6 @@ final class HabitViewModel: ObservableObject {
                 self.notificationAccess = status
             }
         }
-    }
-    
-    // MARK: Erasing Content
-    
-    func reset() {
-        title = ""
-        habitColor = "Card-1"
-        weekDays = []
-        isRemainderOn = false
-        remainderDate = Date()
-        remainderText = ""
-        editHabit = nil
     }
     
 }
