@@ -107,7 +107,7 @@ final class CreateTemplateViewModel: ObservableObject {
     private func scheduleNotification(dates: [Date]) async throws -> [String] {
         let content = UNMutableNotificationContent()
         content.title = "Habit Remainder"
-        content.subtitle = remainderText
+        content.subtitle = title
         content.sound = UNNotificationSound.default
         
         // Scheduled Ids
