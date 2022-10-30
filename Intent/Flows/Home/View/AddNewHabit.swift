@@ -85,11 +85,30 @@ struct AddNewHabit: View {
                 }
                 
                 Divider()
-                    .padding(.vertical,10)
+                    .padding(.vertical, 10)
                 
                 // Hiding if Notification access is rejected
                 RemainderSwitchView()
-                RemainderTimeView()
+               
+                ScrollViewReader { value in
+                    ScrollView(habitModel.remainderDates.count > 1 ? .vertical : .init(), showsIndicators: false) {
+                        LazyVGrid(columns: [GridItem(.flexible())], spacing: .zero) {
+                            ForEach(habitModel.remainderDates.indices, id: \.self) { index in
+                                RemainderTimeView(forIndex: index)
+                                    .transition(.move(edge: .bottom))
+                            }
+                            .padding(.vertical)
+                        }
+                    }
+                    .onChange(of: habitModel.remainderDates.count) { _ in
+                        withAnimation {
+                            value.scrollTo(habitModel.remainderDates.count - 1)
+                        }
+                    }
+                }
+                
+                AddTimeButton()
+                
             }
             .animation(.easeInOut, value: habitModel.isRemainderOn)
             .frame(maxHeight: .infinity,alignment: .top)
@@ -135,30 +154,13 @@ struct AddNewHabit: View {
             }
         }
         .overlay {
-            if habitModel.showTimePicker{
-                ZStack{
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            withAnimation {
-                                habitModel.showTimePicker.toggle()
-                            }
-                        }
-                    
-                    DatePicker.init("", selection: $habitModel.remainderDate,displayedComponents: [.hourAndMinute])
-                        .datePickerStyle(.wheel)
-                        .labelsHidden()
-                        .padding()
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Colors.Background.dark)
-                        }
-                        .padding()
-                }
+            if habitModel.showTimePicker {
+                DatePickerView(forIndex: habitModel.timePickerIndex)
             }
         }
     }
+    
+    // MARK: - Remainder swtich
     
     @ViewBuilder
     private func RemainderSwitchView() -> some View {
@@ -179,11 +181,13 @@ struct AddNewHabit: View {
         .opacity(habitModel.notificationAccess ? 1 : 0)
     }
     
+    // MARK: - Time
+    
     @ViewBuilder
-    private func RemainderTimeView() -> some View {
+    private func RemainderTimeView(forIndex: Int) -> some View {
         HStack(spacing: 12) {
             Label {
-                Text(habitModel.remainderDate.formatted(date: .omitted, time: .shortened))
+                Text(habitModel.remainderDates[forIndex].formatted(date: .omitted, time: .shortened))
             } icon: {
                 Image(systemName: "clock")
             }
@@ -193,6 +197,7 @@ struct AddNewHabit: View {
             .onTapGesture {
                 withAnimation {
                     habitModel.showTimePicker.toggle()
+                    habitModel.timePickerIndex = forIndex
                 }
             }
             
@@ -200,11 +205,70 @@ struct AddNewHabit: View {
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .allowsHitTesting(forIndex == .zero)
+                .foregroundColor(forIndex == .zero ? Color(uiColor: .label) : .gray)
+            if forIndex > .zero {
+                Button {
+                    habitModel.remainderDates.remove(at: forIndex)
+                } label: {
+                    Image(systemName: "xmark.circle")
+                    .foregroundColor(.primary)
+                }
+            }
         }
         .frame(height: habitModel.isRemainderOn ? nil : 0)
         .opacity(habitModel.isRemainderOn ? 1 : 0)
         .opacity(habitModel.notificationAccess ? 1 : 0)
     }
+    
+    // MARK: - Date Picker
+    
+    @ViewBuilder
+    private func DatePickerView(forIndex: Int) -> some View {
+        ZStack {
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation {
+                        habitModel.showTimePicker.toggle()
+                    }
+                }
+            
+            DatePicker.init("", selection: $habitModel.remainderDates[forIndex], displayedComponents: [.hourAndMinute])
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .padding()
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Colors.Background.dark)
+                }
+                .padding()
+        }
+    }
+    
+    @ViewBuilder
+    private func AddTimeButton() -> some View {
+        Button {
+            withAnimation(.easeInOut) {
+                habitModel.remainderDates.append(Date())
+            }
+        } label: {
+            Label {
+                Text("Add time")
+            } icon: {
+                Image(systemName: "plus.circle")
+            }
+            .font(.callout.bold())
+            .foregroundColor(.primary)
+        }
+        .padding(.top, 15)
+        .frame(height: habitModel.isRemainderOn && habitModel.remainderDates.count <= 96 ? nil : 0)
+        .opacity(habitModel.isRemainderOn ? 1 : 0)
+        .opacity(habitModel.notificationAccess ? 1 : 0)
+        .opacity(habitModel.remainderDates.count <= 96 ? 1 : 0)
+    }
+    
 }
 
 struct AddNewHabit_Previews: PreviewProvider {
