@@ -24,26 +24,8 @@ struct AddNewHabit: View {
                 
                 // MARK: Habit Color Picker
                 
-                HStack(spacing: 0) {
-                    ForEach(1...7, id: \.self) { index in
-                        let color = Colors.Card.color(for: index)
-                        Circle()
-                            .fill(Color(color))
-                            .frame(width: 30, height: 30)
-                            .overlay(content: {
-                                if color == habitModel.habitColor {
-                                    Image(systemName: "checkmark")
-                                        .font(.caption.bold())
-                                        .foregroundColor(.white)
-                                }
-                            })
-                            .onTapGesture {
-                                withAnimation {
-                                    habitModel.habitColor = color
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                    }
+                AddNewHabit.ColorPickerView(checkedColor: habitModel.habitColor) { color in
+                    habitModel.habitColor = color
                 }
                 .padding(.vertical)
                 
@@ -180,6 +162,38 @@ struct AddNewHabit: View {
         }
         .opacity(habitModel.notificationAccess ? 1 : 0)
     }
+    
+    // MARK: - Color Picker
+    
+    @ViewBuilder
+    static func ColorPickerView(
+        checkedColor: String,
+        _ colorCompletion: ((String) -> Void)?
+    ) -> some View {
+        
+        HStack(spacing: 0) {
+            ForEach(1...7, id: \.self) { index in
+                let color = Colors.Card.color(for: index)
+                Circle()
+                    .fill(Color(color))
+                    .frame(width: 30, height: 30)
+                    .overlay(content: {
+                        if color == checkedColor {
+                            Image(systemName: "checkmark")
+                                .font(.caption.bold())
+                                .foregroundColor(.white)
+                        }
+                    })
+                    .onTapGesture {
+                        withAnimation {
+                            colorCompletion?(color)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+            }
+        }
+    }
+    
     
     // MARK: - Time
     

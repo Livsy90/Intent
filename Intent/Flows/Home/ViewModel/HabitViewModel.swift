@@ -10,9 +10,7 @@ import CoreData
 import UserNotifications
 
 final class HabitViewModel: ObservableObject {
-    
-    var onAddHabit: (() -> Void)?
-        
+            
     ///New Habit Properties
     @Published var addNewHabit: Bool = false
     
@@ -26,6 +24,7 @@ final class HabitViewModel: ObservableObject {
     @Published var remainderText: String = ""
     @Published var remainderDate: Date = Date()
     @Published var remainderDates: [Date] = [Date()]
+    @Published var createTemplate: Bool = false
     
     /// Remainder Time Picker
     @Published var showTimePicker: Bool = false
@@ -87,56 +86,6 @@ final class HabitViewModel: ObservableObject {
       return false
     }
     
-    // MARK: Adding Notifications
-    
-    func scheduleNotification() async throws -> [String] {
-        let content = UNMutableNotificationContent()
-        content.title = "Habit Remainder"
-        content.subtitle = remainderText
-        content.sound = UNNotificationSound.default
-        
-        // Scheduled Ids
-        var notificationIDs: [String] = []
-        let calendar = Calendar.current
-        let weekdaySymbols: [String] = calendar.shortWeekdaySymbols
-        
-        // MARK: Scheduling Notification
-        
-        for weekDay in weekDays {
-            
-            for date in remainderDates {
-                let id = UUID().uuidString
-                let hour = calendar.component(.hour, from: date)
-                let min = calendar.component(.minute, from: date)
-                let day = weekdaySymbols.firstIndex { currentDay in
-                    return currentDay == weekDay
-                } ?? -1
-                
-                if day != -1 {
-                    var components = DateComponents()
-                    components.hour = hour
-                    components.minute = min
-                    components.weekday = day + 1
-                    
-                    // MARK: Thus this will Trigger Notification on Each Selected Day
-                    
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-                    
-                    // MARK: Notification Request
-                    
-                    let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                    
-                    // ADDING ID
-                    notificationIDs.append(id)
-                    
-                    try await UNUserNotificationCenter.current().add(request)
-                }
-            }
-        }
-        
-        return notificationIDs
-    }
-    
     // MARK: Deleting Habit From Database
     
     func deleteHabit(context: NSManagedObjectContext) -> Bool {
@@ -193,6 +142,57 @@ final class HabitViewModel: ObservableObject {
         
         return false
     }
+    
+    // MARK: Adding Notifications
+    
+    private func scheduleNotification() async throws -> [String] {
+        let content = UNMutableNotificationContent()
+        content.title = "Habit Remainder"
+        content.subtitle = remainderText
+        content.sound = UNNotificationSound.default
+        
+        // Scheduled Ids
+        var notificationIDs: [String] = []
+        let calendar = Calendar.current
+        let weekdaySymbols: [String] = calendar.shortWeekdaySymbols
+        
+        // MARK: Scheduling Notification
+        
+        for weekDay in weekDays {
+            
+            for date in remainderDates {
+                let id = UUID().uuidString
+                let hour = calendar.component(.hour, from: date)
+                let min = calendar.component(.minute, from: date)
+                let day = weekdaySymbols.firstIndex { currentDay in
+                    return currentDay == weekDay
+                } ?? -1
+                
+                if day != -1 {
+                    var components = DateComponents()
+                    components.hour = hour
+                    components.minute = min
+                    components.weekday = day + 1
+                    
+                    // MARK: Thus this will Trigger Notification on Each Selected Day
+                    
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                    
+                    // MARK: Notification Request
+                    
+                    let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                    
+                    // ADDING ID
+                    notificationIDs.append(id)
+                    
+                    try await UNUserNotificationCenter.current().add(request)
+                }
+            }
+        }
+        
+        return notificationIDs
+    }
+    
     
     private func requestNotificationAccess() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in

@@ -9,6 +9,7 @@ import SwiftUI
 
 protocol HomeScreenRouter: AnyObject {
     func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit
+    func createTemplateScreen() -> CreateTemplateView
 }
 
 struct Home: View {
@@ -24,14 +25,18 @@ struct Home: View {
                 .frame(maxWidth: .infinity)
                 .overlay(alignment: .trailing) {
                     Button {
-                        
+                        habitModel.createTemplate.toggle()
                     } label: {
-                        Image(systemName: "gearshape")
+                        Image(systemName: "text.badge.plus")
                             .font(.title3)
                             .foregroundColor(.primary)
                     }
                 }
                 .padding(.bottom,10)
+                .sheet(isPresented: $habitModel.createTemplate) {
+                } content: {
+                    router?.createTemplateScreen()
+                }
             
             VStack {
                 ScrollView(habits.isEmpty ? .init() : .vertical, showsIndicators: false) {
