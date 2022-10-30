@@ -35,4 +35,8 @@ extension HomeRouter: HomeScreenRouter {
     func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit {
         AddNewHabit(habitModel: viewModel)
     }
+    
+    func createTemplateScreen() -> CreateTemplateView {
+        CreateTemplateView(viewModel: .init())
+    }
 }
