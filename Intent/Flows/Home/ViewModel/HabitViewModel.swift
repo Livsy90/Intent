@@ -25,9 +25,11 @@ final class HabitViewModel: ObservableObject {
     @Published var isRemainderOn: Bool = false
     @Published var remainderText: String = ""
     @Published var remainderDate: Date = Date()
+    @Published var remainderDates: [Date] = [Date()]
     
     /// Remainder Time Picker
-    @Published  var showTimePicker: Bool = false
+    @Published var showTimePicker: Bool = false
+    @Published var timePickerIndex: Int = .zero
     
     /// Notification Access Status
     @Published  var notificationAccess: Bool = false
@@ -56,9 +58,10 @@ final class HabitViewModel: ObservableObject {
         habit.weekDays = weekDays
         habit.isRemainderOn = isRemainderOn
         habit.remainderText = remainderText
-        habit.notificationDate = remainderDate
+        //habit.notificationDate = remainderDate
         habit.dateAdded = Date()
         habit.notificationIDs = []
+        habit.notificationDates = remainderDates
         
         if isRemainderOn {
             
@@ -101,35 +104,33 @@ final class HabitViewModel: ObservableObject {
         
         for weekDay in weekDays {
             
-            // UNIQUE ID FOR EACH NOTIFICATION
-            let id = UUID().uuidString
-            let hour = calendar.component(.hour, from: remainderDate)
-            let min = calendar.component(.minute, from: remainderDate)
-            let day = weekdaySymbols.firstIndex { currentDay in
-                return currentDay == weekDay
-            } ?? -1
-            
-            // MARK: Since Week Day Starts from 1-7
-            
-            // Thus Adding +1 to Index
-            if day != -1 {
-                var components = DateComponents()
-                components.hour = hour
-                components.minute = min
-                components.weekday = day + 1
+            for date in remainderDates {
+                let id = UUID().uuidString
+                let hour = calendar.component(.hour, from: date)
+                let min = calendar.component(.minute, from: date)
+                let day = weekdaySymbols.firstIndex { currentDay in
+                    return currentDay == weekDay
+                } ?? -1
                 
-                // MARK: Thus this will Trigger Notification on Each Selected Day
-                
-                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-                
-                // MARK: Notification Request
-                
-                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-                
-                // ADDING ID
-                notificationIDs.append(id)
-                
-                try await UNUserNotificationCenter.current().add(request)
+                if day != -1 {
+                    var components = DateComponents()
+                    components.hour = hour
+                    components.minute = min
+                    components.weekday = day + 1
+                    
+                    // MARK: Thus this will Trigger Notification on Each Selected Day
+                    
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                    
+                    // MARK: Notification Request
+                    
+                    let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                    
+                    // ADDING ID
+                    notificationIDs.append(id)
+                    
+                    try await UNUserNotificationCenter.current().add(request)
+                }
             }
         }
         
@@ -163,7 +164,7 @@ final class HabitViewModel: ObservableObject {
             habitColor = editHabit.color ?? Colors.Card.raspberrySunset.rawValue
             weekDays = editHabit.weekDays ?? []
             isRemainderOn = editHabit.isRemainderOn
-            remainderDate = editHabit.notificationDate ?? Date()
+            remainderDates = editHabit.notificationDates ?? [Date()]
             remainderText = editHabit.remainderText ?? ""
         }
     }
@@ -175,9 +176,10 @@ final class HabitViewModel: ObservableObject {
         habitColor = Colors.Card.raspberrySunset.rawValue
         weekDays = []
         isRemainderOn = false
-        remainderDate = Date()
+        remainderDates = [Date()]
         remainderText = ""
         editHabit = nil
+        timePickerIndex = .zero
     }
     
     // MARK: Done Button Status
