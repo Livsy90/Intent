@@ -111,7 +111,7 @@ struct AddNewHabit: View {
                 
             }
             .animation(.easeInOut, value: habitModel.isRemainderOn)
-            .frame(maxHeight: .infinity,alignment: .top)
+            .frame(maxHeight: .infinity, alignment: .top)
             .padding()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(habitModel.editHabit != nil ? "Edit Habit" : "Add Habit")
