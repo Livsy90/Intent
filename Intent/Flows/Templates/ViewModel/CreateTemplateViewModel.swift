@@ -123,6 +123,7 @@ final class CreateTemplateViewModel: ObservableObject {
                 let id = UUID().uuidString
                 let hour = calendar.component(.hour, from: date)
                 let min = calendar.component(.minute, from: date)
+                let sec = calendar.component(.second, from: date)
                 let day = weekdaySymbols.firstIndex { currentDay in
                     return currentDay == weekDay
                 } ?? -1
@@ -131,6 +132,7 @@ final class CreateTemplateViewModel: ObservableObject {
                     var components = DateComponents()
                     components.hour = hour
                     components.minute = min
+                    components.second = sec
                     components.weekday = day + 1
                     
                     // MARK: Thus this will Trigger Notification on Each Selected Day

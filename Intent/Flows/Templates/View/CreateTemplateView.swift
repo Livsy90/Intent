@@ -11,6 +11,7 @@ struct CreateTemplateView: View {
     
     @ObservedObject var viewModel: CreateTemplateViewModel
     @FocusState var isFocused: Bool
+    @State var isLoading: Bool = false
     
     /// Environment Values
     @Environment(\.self) var env
@@ -31,7 +32,7 @@ struct CreateTemplateView: View {
                             .padding(.horizontal, 10)
                             .padding(.vertical, 12)
                             .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                       
+                        
                         Divider()
                         
                         // MARK: Habit Color Picker
@@ -40,10 +41,16 @@ struct CreateTemplateView: View {
                             viewModel.habitColor = color
                         }
                         .padding(.vertical)
+                        .onTapGesture {
+                            isFocused = false
+                        }
                         
                         Divider()
                         
                         RemainderTimeView()
+                            .onTapGesture {
+                                isFocused = false
+                            }
                         
                         Divider()
                         
@@ -56,6 +63,9 @@ struct CreateTemplateView: View {
                         }
                         .accentColor(Color(.label))
                         .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        .onTapGesture {
+                            isFocused = false
+                        }
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding()
@@ -73,6 +83,7 @@ struct CreateTemplateView: View {
                         
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Done") {
+                                isLoading = true
                                 Task {
                                     if await viewModel.addHabbit(context: env.managedObjectContext) {
                                         env.dismiss()
@@ -90,6 +101,14 @@ struct CreateTemplateView: View {
         .overlay {
             if viewModel.showStartTimePicker || viewModel.showEndTimePicker {
                 DatePickerView(isStart: viewModel.showStartTimePicker)
+            } else if isLoading {
+                ZStack {
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .ignoresSafeArea()
+                        
+                    ProgressView()
+                }
             }
         }
         .onTapGesture {

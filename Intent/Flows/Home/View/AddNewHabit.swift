@@ -11,6 +11,7 @@ struct AddNewHabit: View {
     
     @ObservedObject var habitModel: HabitViewModel
     @FocusState var isFocused: Bool
+    @State var isLoading: Bool = false
     
     /// Environment Values
     @Environment(\.self) var env
@@ -75,10 +76,14 @@ struct AddNewHabit: View {
                             // Hiding if Notification access is rejected
                             RemainderSwitchView()
                                 .padding()
+                                .onTapGesture {
+                                    isFocused = false
+                                }
                             
                             TimeView()
                             
-                            Spacer()
+                            Color.clear
+                                .frame(height: .zero)
                                 .id(1)
                         }
                     }
@@ -93,6 +98,9 @@ struct AddNewHabit: View {
                         }
                     }
                     AddTimeButton()
+                        .onTapGesture {
+                            isFocused = false
+                        }
                 }
             }
             .animation(.easeInOut, value: habitModel.isRemainderOn)
@@ -127,6 +135,7 @@ struct AddNewHabit: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         Task {
+                            isLoading = true
                             if await habitModel.addHabbit(context: env.managedObjectContext) {
                                 env.dismiss()
                             }
@@ -141,10 +150,18 @@ struct AddNewHabit: View {
         .overlay {
             if habitModel.showTimePicker {
                 DatePickerView(forIndex: habitModel.timePickerIndex)
+                    .onTapGesture {
+                        isFocused = false
+                    }
+            } else if isLoading {
+                ZStack {
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .ignoresSafeArea()
+                        
+                    ProgressView()
+                }
             }
-        }
-        .onTapGesture {
-            isFocused = false
         }
     }
     
@@ -225,35 +242,28 @@ struct AddNewHabit: View {
     private func RemainderTimeView(forIndex: Int) -> some View {
         HStack(spacing: 12) {
             Label {
-                Text("Remainder time")
-            } icon: {
-                
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 12)
-            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-            
-            Label {
                 Text(habitModel.remainderDates[forIndex].formatted(date: .omitted, time: .shortened))
+                
+                if forIndex > .zero {
+                    Button {
+                        habitModel.remainderDates.remove(at: forIndex)
+                    } label: {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                            .padding(.leading)
+                    }
+                }
             } icon: {
                 Image(systemName: "clock")
+                    .foregroundColor(.primary)
             }
-            .padding(.horizontal, 10)
             .padding(.vertical, 12)
+            .padding(.horizontal, 10)
             .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             .onTapGesture {
                 withAnimation {
                     habitModel.showTimePicker.toggle()
                     habitModel.timePickerIndex = forIndex
-                }
-            }
-            
-            if forIndex > .zero {
-                Button {
-                    habitModel.remainderDates.remove(at: forIndex)
-                } label: {
-                    Image(systemName: "xmark.circle")
-                        .foregroundColor(.primary)
                 }
             }
         }
