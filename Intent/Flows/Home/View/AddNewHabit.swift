@@ -10,87 +10,90 @@ import SwiftUI
 struct AddNewHabit: View {
     
     @ObservedObject var habitModel: HabitViewModel
+    @FocusState var isFocused: Bool
     
     /// Environment Values
     @Environment(\.self) var env
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 15) {
-                Spacer()
-                TextFieldsStack()
-                Divider()
-                
-                // MARK: Habit Color Picker
-                
-                AddNewHabit.ColorPickerView(checkedColor: habitModel.habitColor) { color in
-                    habitModel.habitColor = color
-                }
-                .padding(.vertical)
-                
-                Divider()
-                
-                // MARK: Frequency Selection
-                
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Frequency")
-                        .font(.callout.bold())
-                    let weekDays = Calendar.current.shortWeekdaySymbols
-                    HStack(spacing: 10) {
-                        ForEach(weekDays, id: \.self) { day in
-                            let index = habitModel.weekDays.firstIndex { value in
-                                return value.caseInsensitiveCompare(day) == .orderedSame
-                            } ?? -1
+            ScrollViewReader { value in
+                VStack {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 15) {
+                            TextFieldsStack()
+                            Divider()
                             
-                            Text(day.capitalized)
-                                .font(.system(size: 13))
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
-                                .foregroundColor(index != -1 ? .white : .primary)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .fill(index != -1 ? Color(habitModel.habitColor) : Colors.Background.light)
-                                }
-                                .onTapGesture {
-                                    withAnimation {
-                                        if index != -1{
-                                            habitModel.weekDays.remove(at: index)
-                                        } else {
-                                            habitModel.weekDays.append(day)
-                                        }
-                                    }
-                                }
-                        }
-                    }
-                    .padding(.top,15)
-                }
-                
-                Divider()
-                    .padding(.vertical, 10)
-                
-                // Hiding if Notification access is rejected
-                RemainderSwitchView()
-                
-                ScrollViewReader { value in
-                    ScrollView(habitModel.remainderDates.count > 1 ? .vertical : .init(), showsIndicators: false) {
-                        LazyVGrid(columns: [GridItem(.flexible())], spacing: .zero) {
-                            ForEach(habitModel.remainderDates.indices, id: \.self) { index in
-                                RemainderTimeView(forIndex: index)
-                                    .transition(.move(edge: .bottom))
+                            // MARK: Habit Color Picker
+                            
+                            AddNewHabit.ColorPickerView(checkedColor: habitModel.habitColor) { color in
+                                habitModel.habitColor = color
                             }
                             .padding(.vertical)
+                            
+                            Divider()
+                            
+                            // MARK: Frequency Selection
+                            
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Frequency")
+                                    .font(.callout.bold())
+                                let weekDays = Calendar.current.shortWeekdaySymbols
+                                HStack(spacing: 10) {
+                                    ForEach(weekDays, id: \.self) { day in
+                                        let index = habitModel.weekDays.firstIndex { value in
+                                            return value.caseInsensitiveCompare(day) == .orderedSame
+                                        } ?? -1
+                                        
+                                        Text(day.capitalized)
+                                            .font(.system(size: 13))
+                                            .fontWeight(.semibold)
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 12)
+                                            .foregroundColor(index != -1 ? .white : .primary)
+                                            .background {
+                                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                    .fill(index != -1 ? Color(habitModel.habitColor) : Colors.Background.light)
+                                            }
+                                            .onTapGesture {
+                                                withAnimation {
+                                                    if index != -1{
+                                                        habitModel.weekDays.remove(at: index)
+                                                    } else {
+                                                        habitModel.weekDays.append(day)
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                                .padding(.top,15)
+                            }
+                            
+                            Divider()
+                                .padding(.vertical, 10)
+                            
+                            // Hiding if Notification access is rejected
+                            RemainderSwitchView()
+                                .padding()
+                            
+                            TimeView()
+                            
+                            Spacer()
+                                .id(1)
                         }
                     }
-                    .onChange(of: habitModel.remainderDates.count) { _ in
+                    .onChange(of: habitModel.remainderDates) { _ in
                         withAnimation {
-                            value.scrollTo(habitModel.remainderDates.count - 1)
+                            value.scrollTo(1)
                         }
                     }
+                    .onChange(of: habitModel.isRemainderOn) { _ in
+                        withAnimation {
+                            value.scrollTo(1)
+                        }
+                    }
+                    AddTimeButton()
                 }
-                
-                AddTimeButton()
-                
             }
             .animation(.easeInOut, value: habitModel.isRemainderOn)
             .frame(maxHeight: .infinity, alignment: .top)
@@ -139,6 +142,9 @@ struct AddNewHabit: View {
             if habitModel.showTimePicker {
                 DatePickerView(forIndex: habitModel.timePickerIndex)
             }
+        }
+        .onTapGesture {
+            isFocused = false
         }
     }
     
@@ -195,18 +201,17 @@ struct AddNewHabit: View {
     }
     
     @ViewBuilder
-    private  func TextFieldsStack() -> some View {
+    private func TextFieldsStack() -> some View {
         VStack(spacing: 15) {
-            Spacer()
-            Text("Enter reminder details")
-            Spacer()
             TextField("Title", text: $habitModel.title)
+                .focused($isFocused)
                 .ignoresSafeArea(.keyboard)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             
             TextField("Remainder text", text: $habitModel.remainderText)
+                .focused($isFocused)
                 .ignoresSafeArea(.keyboard)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
@@ -259,6 +264,18 @@ struct AddNewHabit: View {
         .opacity(habitModel.notificationAccess ? 1 : 0)
     }
     
+    @ViewBuilder
+    private func TimeView() -> some View {
+        LazyVGrid(columns: [GridItem(.flexible())], spacing: .zero) {
+            ForEach(habitModel.remainderDates.indices, id: \.self) { index in
+                RemainderTimeView(forIndex: index)
+                    .transition(.move(edge: .bottom))
+                    .id(index)
+            }
+            .padding(.vertical)
+        }
+    }
+    
     // MARK: - Date Picker
     
     @ViewBuilder
@@ -289,6 +306,7 @@ struct AddNewHabit: View {
     private func AddTimeButton() -> some View {
         Button {
             withAnimation(.easeInOut) {
+                isFocused = false
                 habitModel.remainderDates.append(Date())
             }
         } label: {
