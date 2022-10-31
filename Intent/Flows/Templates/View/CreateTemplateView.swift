@@ -70,7 +70,7 @@ struct CreateTemplateView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding()
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Create template")
+                    .navigationTitle("Create with template")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {

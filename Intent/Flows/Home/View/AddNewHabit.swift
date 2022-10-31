@@ -330,7 +330,7 @@ struct AddNewHabit: View {
         .frame(height: habitModel.isRemainderOn && habitModel.remainderDates.count <= 96 ? nil : 0)
         .opacity(habitModel.isRemainderOn ? 1 : 0)
         .opacity(habitModel.notificationAccess ? 1 : 0)
-        .opacity(habitModel.remainderDates.count <= 96 ? 1 : 0)
+        .opacity(habitModel.remainderDates.count <= 63 ? 1 : 0)
     }
     
 }

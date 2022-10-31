@@ -20,7 +20,7 @@ struct Home: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            Text("Habits")
+            Text("Intent")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity)
                 .overlay(alignment: .trailing) {

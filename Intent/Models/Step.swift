@@ -12,8 +12,7 @@ enum Step: String, CaseIterable {
     case threeHours = "Three hours"
     case twoHours = "Two hours"
     case hour = "Hour"
-    case halfAnHour = "Half an hour"
-    case fifteenMinutes = "Fifteen minutes"
+    case halfAnHour = "30 minutes"
     
     var calendar: (component: Calendar.Component, value: Int) {
         switch self {
@@ -27,8 +26,6 @@ enum Step: String, CaseIterable {
             return (.hour, 1)
         case .halfAnHour:
             return (.minute, 30)
-        case .fifteenMinutes:
-            return (.minute, 15)
         }
     }
 }
