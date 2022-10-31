@@ -13,7 +13,7 @@ final class CreateTemplateViewModel: ObservableObject {
             
     ///New Habit Properties
     @Published var addNewHabit: Bool = false
-    @Published var addNewTemplate: Bool = false // TODO: RemoveMe
+    @Published var addNewTemplate: Bool = false
     @Published var step: Step = .hour
     
     /// Editing Habit
@@ -21,7 +21,7 @@ final class CreateTemplateViewModel: ObservableObject {
     
     @Published var title: String = ""
     @Published var habitColor: String = Colors.Card.raspberrySunset.rawValue
-    @Published var remainderText: String = "Template notification"
+    @Published var remainderText: String = ""
     @Published var startDate: Date = Date()
     @Published var endDate: Date = Date()
     
@@ -69,7 +69,7 @@ final class CreateTemplateViewModel: ObservableObject {
     // MARK: Done Button Status
     
     func doneStatus() -> Bool {
-        !title.isEmpty && startDate < endDate
+        !title.isEmpty && startDate < endDate && !remainderText.isEmpty
     }
     
     private func requestNotificationAccess() {
@@ -106,8 +106,8 @@ final class CreateTemplateViewModel: ObservableObject {
     
     private func scheduleNotification(dates: [Date]) async throws -> [String] {
         let content = UNMutableNotificationContent()
-        content.title = "Habit Remainder"
-        content.subtitle = title
+        content.title = "Intent"
+        content.subtitle = remainderText
         content.sound = UNNotificationSound.default
         
         // Scheduled Ids

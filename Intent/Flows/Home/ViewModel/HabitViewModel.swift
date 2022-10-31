@@ -57,7 +57,6 @@ final class HabitViewModel: ObservableObject {
         habit.weekDays = weekDays
         habit.isRemainderOn = isRemainderOn
         habit.remainderText = remainderText
-        //habit.notificationDate = remainderDate
         habit.dateAdded = Date()
         habit.notificationIDs = []
         habit.notificationDates = remainderDates
@@ -147,7 +146,7 @@ final class HabitViewModel: ObservableObject {
     
     private func scheduleNotification() async throws -> [String] {
         let content = UNMutableNotificationContent()
-        content.title = "Habit Remainder"
+        content.title = "Intent"
         content.subtitle = remainderText
         content.sound = UNNotificationSound.default
         

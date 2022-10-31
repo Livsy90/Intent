@@ -17,10 +17,21 @@ struct CreateTemplateView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 15) {
+                
+                Text("Enter reminder details")
+                Spacer()
+                
                 TextField("Title", text: $viewModel.title)
                     .padding(.horizontal)
                     .padding(.vertical, 10)
                     .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                
+                TextField("Remainder text", text: $viewModel.remainderText)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 12)
+                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+               
+                Divider()
                 
                 // MARK: Habit Color Picker
                 
@@ -40,6 +51,7 @@ struct CreateTemplateView: View {
                         ForEach(Step.allCases, id: \.self) {
                             Text($0.rawValue.lowercased())
                         }
+                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                     }
                 }
             }
@@ -110,41 +122,46 @@ struct CreateTemplateView: View {
         VStack {
             HStack(spacing: 12) {
                 Text("Start")
+                    .frame(width: 60, height: 20)
                     .padding(.horizontal)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 12)
                     .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                
                 Label {
                     Text(viewModel.startDate.formatted(date: .omitted, time: .shortened))
                 } icon: {
                     Image(systemName: "clock")
                 }
+                .frame(width: 130, height: 20)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 12)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                .onTapGesture {
-                    withAnimation {
-                        viewModel.showStartTimePicker.toggle()
-                    }
+            }
+            .onTapGesture {
+                withAnimation {
+                    viewModel.showStartTimePicker.toggle()
                 }
             }
             
             HStack(spacing: 12) {
                 Text("End")
+                    .frame(width: 60, height: 20)
                     .padding(.horizontal)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 12)
                     .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                 Label {
                     Text(viewModel.endDate.formatted(date: .omitted, time: .shortened))
                 } icon: {
                     Image(systemName: "clock")
                 }
+                .frame(width: 130, height: 20)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 12)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                .onTapGesture {
-                    withAnimation {
-                        viewModel.showEndTimePicker.toggle()
-                    }
+            }
+            .onTapGesture {
+                withAnimation {
+                    viewModel.showEndTimePicker.toggle()
                 }
             }
         }

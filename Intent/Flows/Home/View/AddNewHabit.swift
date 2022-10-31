@@ -17,10 +17,9 @@ struct AddNewHabit: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 15) {
-                TextField("Title", text: $habitModel.title)
-                    .padding(.horizontal)
-                    .padding(.vertical, 10)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                Spacer()
+                TextFieldsStack()
+                Divider()
                 
                 // MARK: Habit Color Picker
                 
@@ -44,6 +43,7 @@ struct AddNewHabit: View {
                             } ?? -1
                             
                             Text(day.capitalized)
+                                .font(.system(size: 13))
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
@@ -71,7 +71,7 @@ struct AddNewHabit: View {
                 
                 // Hiding if Notification access is rejected
                 RemainderSwitchView()
-               
+                
                 ScrollViewReader { value in
                     ScrollView(habitModel.remainderDates.count > 1 ? .vertical : .init(), showsIndicators: false) {
                         LazyVGrid(columns: [GridItem(.flexible())], spacing: .zero) {
@@ -194,12 +194,42 @@ struct AddNewHabit: View {
         }
     }
     
+    @ViewBuilder
+    private  func TextFieldsStack() -> some View {
+        VStack(spacing: 15) {
+            Spacer()
+            Text("Enter reminder details")
+            Spacer()
+            TextField("Title", text: $habitModel.title)
+                .ignoresSafeArea(.keyboard)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+            
+            TextField("Remainder text", text: $habitModel.remainderText)
+                .ignoresSafeArea(.keyboard)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+
+        }
+    }
+    
     
     // MARK: - Time
     
     @ViewBuilder
     private func RemainderTimeView(forIndex: Int) -> some View {
         HStack(spacing: 12) {
+            Label {
+                Text("Remainder time")
+            } icon: {
+               
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+            
             Label {
                 Text(habitModel.remainderDates[forIndex].formatted(date: .omitted, time: .shortened))
             } icon: {
@@ -215,18 +245,12 @@ struct AddNewHabit: View {
                 }
             }
             
-            TextField("Remainder Text", text: $habitModel.remainderText)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                .allowsHitTesting(forIndex == .zero)
-                .foregroundColor(forIndex == .zero ? Color(uiColor: .label) : .gray)
             if forIndex > .zero {
                 Button {
                     habitModel.remainderDates.remove(at: forIndex)
                 } label: {
                     Image(systemName: "xmark.circle")
-                    .foregroundColor(.primary)
+                        .foregroundColor(.primary)
                 }
             }
         }
