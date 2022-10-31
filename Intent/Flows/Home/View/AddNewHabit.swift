@@ -205,18 +205,16 @@ struct AddNewHabit: View {
         VStack(spacing: 15) {
             TextField("Title", text: $habitModel.title)
                 .focused($isFocused)
-                .ignoresSafeArea(.keyboard)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             
             TextField("Remainder text", text: $habitModel.remainderText)
                 .focused($isFocused)
-                .ignoresSafeArea(.keyboard)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-
+            
         }
     }
     
@@ -229,7 +227,7 @@ struct AddNewHabit: View {
             Label {
                 Text("Remainder time")
             } icon: {
-               
+                
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 12)

@@ -10,76 +10,80 @@ import SwiftUI
 struct CreateTemplateView: View {
     
     @ObservedObject var viewModel: CreateTemplateViewModel
+    @FocusState var isFocused: Bool
     
     /// Environment Values
     @Environment(\.self) var env
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 15) {
-                
-                Text("Enter reminder details")
-                Spacer()
-                
-                TextField("Title", text: $viewModel.title)
-                    .padding(.horizontal)
-                    .padding(.vertical, 10)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                
-                TextField("Remainder text", text: $viewModel.remainderText)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 12)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-               
-                Divider()
-                
-                // MARK: Habit Color Picker
-                
-                AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
-                    viewModel.habitColor = color
-                }
-                .padding(.vertical)
-                
-                Divider()
-                
-                RemainderTimeView()
-                
-                Divider()
-                
-                Form {
-                    Picker("Repeat every", selection: $viewModel.step) {
-                        ForEach(Step.allCases, id: \.self) {
-                            Text($0.rawValue.lowercased())
+            ScrollViewReader { value in
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 15) {
+                        TextField("Title", text: $viewModel.title)
+                            .focused($isFocused)
+                            .padding(.horizontal)
+                            .padding(.vertical, 10)
+                            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        
+                        TextField("Remainder text", text: $viewModel.remainderText)
+                            .focused($isFocused)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 12)
+                            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                       
+                        Divider()
+                        
+                        // MARK: Habit Color Picker
+                        
+                        AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                            viewModel.habitColor = color
                         }
-                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    }
-                }
-            }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .padding()
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Create template")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        env.dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle")
-                    }
-                    .tint(.primary)
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        Task {
-                            if await viewModel.addHabbit(context: env.managedObjectContext) {
-                                env.dismiss()
+                        .padding(.vertical)
+                        
+                        Divider()
+                        
+                        RemainderTimeView()
+                        
+                        Divider()
+                        
+                        Text("Repeat every")
+                        
+                        Picker("Repeat every", selection: $viewModel.step) {
+                            ForEach(Step.allCases, id: \.self) {
+                                Text($0.rawValue.lowercased())
                             }
                         }
+                        .accentColor(Color(.label))
+                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                     }
-                    .tint(.primary)
-                    .disabled(!viewModel.doneStatus())
-                    .opacity(viewModel.doneStatus() ? 1 : 0.6)
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Create template")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                env.dismiss()
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                            }
+                            .tint(.primary)
+                        }
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Done") {
+                                Task {
+                                    if await viewModel.addHabbit(context: env.managedObjectContext) {
+                                        env.dismiss()
+                                    }
+                                }
+                            }
+                            .tint(.primary)
+                            .disabled(!viewModel.doneStatus())
+                            .opacity(viewModel.doneStatus() ? 1 : 0.6)
+                        }
+                    }
                 }
             }
         }
@@ -87,6 +91,9 @@ struct CreateTemplateView: View {
             if viewModel.showStartTimePicker || viewModel.showEndTimePicker {
                 DatePickerView(isStart: viewModel.showStartTimePicker)
             }
+        }
+        .onTapGesture {
+            isFocused = false
         }
     }
     
