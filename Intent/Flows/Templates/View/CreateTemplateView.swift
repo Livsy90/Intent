@@ -11,7 +11,6 @@ struct CreateTemplateView: View {
     
     @ObservedObject var viewModel: CreateTemplateViewModel
     @FocusState var isFocused: Bool
-    @State var isLoading: Bool = false
     
     /// Environment Values
     @Environment(\.self) var env
@@ -83,7 +82,6 @@ struct CreateTemplateView: View {
                         
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Done") {
-                                isLoading = true
                                 Task {
                                     if await viewModel.addHabbit(context: env.managedObjectContext) {
                                         env.dismiss()
@@ -101,7 +99,7 @@ struct CreateTemplateView: View {
         .overlay {
             if viewModel.showStartTimePicker || viewModel.showEndTimePicker {
                 DatePickerView(isStart: viewModel.showStartTimePicker)
-            } else if isLoading {
+            } else if viewModel.isLoading {
                 ZStack {
                     Rectangle()
                         .fill(.ultraThinMaterial)
@@ -113,6 +111,9 @@ struct CreateTemplateView: View {
         }
         .onTapGesture {
             isFocused = false
+        }
+        .alert("We can only schedule 64 notifications. Please change start time / end time", isPresented: $viewModel.isFull) {
+            Button("OK", role: .cancel) { }
         }
     }
     

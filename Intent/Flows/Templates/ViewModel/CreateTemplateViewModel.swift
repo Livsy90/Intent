@@ -29,6 +29,9 @@ final class CreateTemplateViewModel: ObservableObject {
     /// Remainder Time Picker
     @Published var showStartTimePicker: Bool = false
     @Published var showEndTimePicker: Bool = false
+    
+    @Published var isFull: Bool = false
+    @Published var isLoading: Bool = false
 
     
     /// Notification Access Status
@@ -41,10 +44,16 @@ final class CreateTemplateViewModel: ObservableObject {
     // MARK: Adding Habit to Database
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
-        let habit = Habit(context: context)
+        isLoading = true
         let weekDays = Calendar.current.shortWeekdaySymbols
         let dates = datesBetween(startDate: startDate, endDate: endDate, step: step)
         
+        guard (dates.count * weekDays.count) < 64 else {
+            isLoading = false
+            isFull = true
+            return false
+        }
+        let habit = Habit(context: context)
         habit.title = title
         habit.color = habitColor
         habit.weekDays = weekDays

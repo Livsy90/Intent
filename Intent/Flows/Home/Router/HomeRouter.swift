@@ -33,7 +33,7 @@ struct HomeRouterView: View {
 extension HomeRouter: HomeScreenRouter {
     @ViewBuilder
     func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit {
-        AddNewHabit(habitModel: viewModel)
+        AddNewHabit(viewModel: viewModel)
     }
     
     func createTemplateScreen() -> CreateTemplateView {

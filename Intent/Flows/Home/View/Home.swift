@@ -15,7 +15,7 @@ protocol HomeScreenRouter: AnyObject {
 struct Home: View {
     
     @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], animation: .easeInOut) var habits: FetchedResults<Habit>
-    @StateObject var habitModel: HabitViewModel = .init()
+    @StateObject var viewModel: HabitViewModel = .init()
     @State var router: HomeScreenRouter?
     
     var body: some View {
@@ -25,7 +25,7 @@ struct Home: View {
                 .frame(maxWidth: .infinity)
                 .overlay(alignment: .trailing) {
                     Button {
-                        habitModel.createTemplate.toggle()
+                        viewModel.createTemplate.toggle()
                     } label: {
                         Image(systemName: "text.badge.plus")
                             .font(.title3)
@@ -33,7 +33,7 @@ struct Home: View {
                     }
                 }
                 .padding(.bottom,10)
-                .sheet(isPresented: $habitModel.createTemplate) {
+                .sheet(isPresented: $viewModel.createTemplate) {
                 } content: {
                     router?.createTemplateScreen()
                 }
@@ -49,7 +49,7 @@ struct Home: View {
                 }
                 
                 Button {
-                    habitModel.addNewHabit.toggle()
+                    viewModel.addNewHabit.toggle()
                 } label: {
                     Label {
                         Text("New habit")
@@ -66,13 +66,13 @@ struct Home: View {
         }
         .frame(maxHeight: .infinity,alignment: .top)
         .padding()
-        .sheet(isPresented: $habitModel.addNewHabit) {
+        .sheet(isPresented: $viewModel.addNewHabit) {
             
             // MARK: Erasing All Existing Content
             
-            habitModel.reset()
+            viewModel.reset()
         } content: {
-            router?.addHabitScreen(viewModel: habitModel)
+            router?.addHabitScreen(viewModel: viewModel)
         }
     }
     
@@ -153,9 +153,9 @@ struct Home: View {
         }
         .onTapGesture {
             // MARK: Editing Habit
-            habitModel.editHabit = habit
-            habitModel.restoreEditData()
-            habitModel.addNewHabit.toggle()
+            viewModel.editHabit = habit
+            viewModel.restoreEditData()
+            viewModel.addNewHabit.toggle()
         }
     }
     

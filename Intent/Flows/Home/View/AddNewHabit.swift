@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddNewHabit: View {
     
-    @ObservedObject var habitModel: HabitViewModel
+    @ObservedObject var viewModel: HabitViewModel
     @FocusState var isFocused: Bool
     @State var isLoading: Bool = false
     
@@ -27,8 +27,8 @@ struct AddNewHabit: View {
                             
                             // MARK: Habit Color Picker
                             
-                            AddNewHabit.ColorPickerView(checkedColor: habitModel.habitColor) { color in
-                                habitModel.habitColor = color
+                            AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                                viewModel.habitColor = color
                             }
                             .padding(.vertical)
                             
@@ -42,7 +42,7 @@ struct AddNewHabit: View {
                                 let weekDays = Calendar.current.shortWeekdaySymbols
                                 HStack(spacing: 10) {
                                     ForEach(weekDays, id: \.self) { day in
-                                        let index = habitModel.weekDays.firstIndex { value in
+                                        let index = viewModel.weekDays.firstIndex { value in
                                             return value.caseInsensitiveCompare(day) == .orderedSame
                                         } ?? -1
                                         
@@ -54,14 +54,14 @@ struct AddNewHabit: View {
                                             .foregroundColor(index != -1 ? .white : .primary)
                                             .background {
                                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                    .fill(index != -1 ? Color(habitModel.habitColor) : Colors.Background.light)
+                                                    .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
                                             }
                                             .onTapGesture {
                                                 withAnimation {
                                                     if index != -1{
-                                                        habitModel.weekDays.remove(at: index)
+                                                        viewModel.weekDays.remove(at: index)
                                                     } else {
-                                                        habitModel.weekDays.append(day)
+                                                        viewModel.weekDays.append(day)
                                                     }
                                                 }
                                             }
@@ -87,12 +87,12 @@ struct AddNewHabit: View {
                                 .id(1)
                         }
                     }
-                    .onChange(of: habitModel.remainderDates) { _ in
+                    .onChange(of: viewModel.remainderDates) { _ in
                         withAnimation {
                             value.scrollTo(1)
                         }
                     }
-                    .onChange(of: habitModel.isRemainderOn) { _ in
+                    .onChange(of: viewModel.isRemainderOn) { _ in
                         withAnimation {
                             value.scrollTo(1)
                         }
@@ -103,11 +103,11 @@ struct AddNewHabit: View {
                         }
                 }
             }
-            .animation(.easeInOut, value: habitModel.isRemainderOn)
+            .animation(.easeInOut, value: viewModel.isRemainderOn)
             .frame(maxHeight: .infinity, alignment: .top)
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(habitModel.editHabit != nil ? "Edit Habit" : "Add Habit")
+            .navigationTitle(viewModel.editHabit != nil ? "Edit Habit" : "Add Habit")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -122,34 +122,34 @@ struct AddNewHabit: View {
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        if habitModel.deleteHabit(context: env.managedObjectContext) {
+                        if viewModel.deleteHabit(context: env.managedObjectContext) {
                             env.dismiss()
                         }
                     } label: {
                         Image(systemName: "trash")
                     }
                     .tint(.red)
-                    .opacity(habitModel.editHabit == nil ? 0 : 1)
+                    .opacity(viewModel.editHabit == nil ? 0 : 1)
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         Task {
                             isLoading = true
-                            if await habitModel.addHabbit(context: env.managedObjectContext) {
+                            if await viewModel.addHabbit(context: env.managedObjectContext) {
                                 env.dismiss()
                             }
                         }
                     }
                     .tint(.primary)
-                    .disabled(!habitModel.doneStatus())
-                    .opacity(habitModel.doneStatus() ? 1 : 0.6)
+                    .disabled(!viewModel.doneStatus())
+                    .opacity(viewModel.doneStatus() ? 1 : 0.6)
                 }
             }
         }
         .overlay {
-            if habitModel.showTimePicker {
-                DatePickerView(forIndex: habitModel.timePickerIndex)
+            if viewModel.showTimePicker {
+                DatePickerView(forIndex: viewModel.timePickerIndex)
                     .onTapGesture {
                         isFocused = false
                     }
@@ -180,10 +180,10 @@ struct AddNewHabit: View {
             }
             .frame(maxWidth: .infinity,alignment: .leading)
             
-            Toggle(isOn: $habitModel.isRemainderOn) {}
+            Toggle(isOn: $viewModel.isRemainderOn) {}
                 .labelsHidden()
         }
-        .opacity(habitModel.notificationAccess ? 1 : 0)
+        .opacity(viewModel.notificationAccess ? 1 : 0)
     }
     
     // MARK: - Color Picker
@@ -220,13 +220,13 @@ struct AddNewHabit: View {
     @ViewBuilder
     private func TextFieldsStack() -> some View {
         VStack(spacing: 15) {
-            TextField("Title", text: $habitModel.title)
+            TextField("Title", text: $viewModel.title)
                 .focused($isFocused)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             
-            TextField("Remainder text", text: $habitModel.remainderText)
+            TextField("Remainder text", text: $viewModel.remainderText)
                 .focused($isFocused)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
@@ -242,11 +242,11 @@ struct AddNewHabit: View {
     private func RemainderTimeView(forIndex: Int) -> some View {
         HStack(spacing: 12) {
             Label {
-                Text(habitModel.remainderDates[forIndex].formatted(date: .omitted, time: .shortened))
+                Text(viewModel.remainderDates[forIndex].formatted(date: .omitted, time: .shortened))
                 
                 if forIndex > .zero {
                     Button {
-                        habitModel.remainderDates.remove(at: forIndex)
+                        viewModel.remainderDates.remove(at: forIndex)
                     } label: {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
@@ -262,20 +262,20 @@ struct AddNewHabit: View {
             .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             .onTapGesture {
                 withAnimation {
-                    habitModel.showTimePicker.toggle()
-                    habitModel.timePickerIndex = forIndex
+                    viewModel.showTimePicker.toggle()
+                    viewModel.timePickerIndex = forIndex
                 }
             }
         }
-        .frame(height: habitModel.isRemainderOn ? nil : 0)
-        .opacity(habitModel.isRemainderOn ? 1 : 0)
-        .opacity(habitModel.notificationAccess ? 1 : 0)
+        .frame(height: viewModel.isRemainderOn ? nil : 0)
+        .opacity(viewModel.isRemainderOn ? 1 : 0)
+        .opacity(viewModel.notificationAccess ? 1 : 0)
     }
     
     @ViewBuilder
     private func TimeView() -> some View {
         LazyVGrid(columns: [GridItem(.flexible())], spacing: .zero) {
-            ForEach(habitModel.remainderDates.indices, id: \.self) { index in
+            ForEach(viewModel.remainderDates.indices, id: \.self) { index in
                 RemainderTimeView(forIndex: index)
                     .transition(.move(edge: .bottom))
                     .id(index)
@@ -294,11 +294,11 @@ struct AddNewHabit: View {
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation {
-                        habitModel.showTimePicker.toggle()
+                        viewModel.showTimePicker.toggle()
                     }
                 }
             
-            DatePicker.init("", selection: $habitModel.remainderDates[forIndex], displayedComponents: [.hourAndMinute])
+            DatePicker.init("", selection: $viewModel.remainderDates[forIndex], displayedComponents: [.hourAndMinute])
                 .datePickerStyle(.wheel)
                 .labelsHidden()
                 .padding()
@@ -315,7 +315,7 @@ struct AddNewHabit: View {
         Button {
             withAnimation(.easeInOut) {
                 isFocused = false
-                habitModel.remainderDates.append(Date())
+                viewModel.remainderDates.append(Date())
             }
         } label: {
             Label {
@@ -327,17 +327,17 @@ struct AddNewHabit: View {
             .foregroundColor(.primary)
         }
         .padding(.top, 15)
-        .frame(height: habitModel.isRemainderOn && habitModel.remainderDates.count <= 96 ? nil : 0)
-        .opacity(habitModel.isRemainderOn ? 1 : 0)
-        .opacity(habitModel.notificationAccess ? 1 : 0)
-        .opacity(habitModel.remainderDates.count <= 63 ? 1 : 0)
+        .frame(height: viewModel.isRemainderOn && (viewModel.remainderDates.count * viewModel.weekDays.count) < 64 ? nil : 0)
+        .opacity(viewModel.isRemainderOn ? 1 : 0)
+        .opacity(viewModel.notificationAccess ? 1 : 0)
+        .opacity((viewModel.remainderDates.count * viewModel.weekDays.count) < 64 ? 1 : 0)
     }
     
 }
 
 struct AddNewHabit_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewHabit(habitModel: HabitViewModel())
+        AddNewHabit(viewModel: HabitViewModel())
             .preferredColorScheme(.dark)
     }
 }
