@@ -109,9 +109,9 @@ final class CreateTemplateViewModel: ObservableObject {
     ) -> [Date] {
         
         var date = startDate
-        var dates = [Date]()
+        var dates = [startDate]
 
-        while date <= endDate {
+        while date < endDate {
             date = Calendar.current.date(
                 byAdding: step.calendar.component,
                 value: step.calendar.value,
