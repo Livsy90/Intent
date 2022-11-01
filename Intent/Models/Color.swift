@@ -20,7 +20,7 @@ enum Colors {
         case orangeJuice
         case forgetMeNot
         case latte
-        case overcast
+        case plum
         case raspberrySunset
         case youngLeaf
         
@@ -34,7 +34,7 @@ enum Colors {
                 return 3
             case .latte:
                 return 4
-            case .overcast:
+            case .plum:
                 return 5
             case .blueRose:
                 return 6

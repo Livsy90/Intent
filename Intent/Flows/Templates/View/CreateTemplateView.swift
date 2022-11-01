@@ -60,6 +60,7 @@ struct CreateTemplateView: View {
                                 Text($0.rawValue.lowercased())
                             }
                         }
+                        .frame(width: 150)
                         .padding(.horizontal)
                         .accentColor(Color(.label))
                         .background {

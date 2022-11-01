@@ -28,6 +28,8 @@ struct Home: View {
                 .overlay(alignment: .trailing) {
                     Button {
                         viewModel.createTemplate.toggle()
+                        UIImpactFeedbackGenerator(style: .medium)
+                            .impactOccurred()
                     } label: {
                         Image(systemName: "calendar.badge.plus")
                             .font(.title3)
@@ -53,6 +55,8 @@ struct Home: View {
                 }
                 
                 Button {
+                    UIImpactFeedbackGenerator(style: .medium)
+                        .impactOccurred()
                     viewModel.addNewHabit.toggle()
                 } label: {
                     Label {

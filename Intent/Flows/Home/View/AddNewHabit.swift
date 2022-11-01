@@ -55,6 +55,8 @@ struct AddNewHabit: View {
                                                     .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
                                             }
                                             .onTapGesture {
+                                                UIImpactFeedbackGenerator(style: .medium)
+                                                    .impactOccurred()
                                                 withAnimation {
                                                     if index != -1{
                                                         viewModel.weekDays.remove(at: index)
@@ -105,7 +107,7 @@ struct AddNewHabit: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.editHabit != nil ? "Edit Habit" : "Add Habit")
+            .navigationTitle(viewModel.editHabit != nil ? "Edit schedule" : "New schedule")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -198,6 +200,7 @@ struct AddNewHabit: View {
                             lineWidth: 4
                         )
                 }
+                .glow(color: isOnColor, radius: viewModel.isRemainderOn ? 4 : 0)
         }
         .opacity(viewModel.notificationAccess ? 1 : 0)
     }
@@ -213,26 +216,40 @@ struct AddNewHabit: View {
         HStack(spacing: 0) {
             ForEach(1...7, id: \.self) { index in
                 let color = Colors.Card.color(for: index)
-                let uiColor = UIColor(named: color) ?? .clear
+                let uiColor = UIColor(named: color) ?? .white
+                let isChecked = color == checkedColor
+                let checkedColor = isChecked ? Color(uiColor: uiColor) : .white
+                let sideSize: CGFloat = isChecked ? 30 : 24
                 
                 Circle()
-                    .fill(Color(color))
-                    .frame(width: 30, height: 30)
+                    .fill(Color(color).opacity(isChecked ? 1 : 0.7))
+                    .frame(width: sideSize, height: sideSize)
                     .background {
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.25),
+                                    .white.opacity(0.05),
+                                    .clear
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .blur(radius: 5)
+                        
                         RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .stroke(
                                 .linearGradient(colors: [
                                     .white.opacity(0.6),
                                     .clear,
-                                    .init(uiColor: uiColor).opacity(0.2),
-                                    .init(uiColor: uiColor).opacity(0.5),
-                                    .init(uiColor: uiColor).opacity(0.8)
+                                    checkedColor.opacity(0.2),
+                                    checkedColor.opacity(0.5),
+                                    checkedColor.opacity(0.8)
                                 ], startPoint: .topLeading, endPoint: .bottomTrailing),
                                 lineWidth: 5
                             )
+                            .glow(color: isChecked ? Color(color) : .clear, radius: .zero)
                     }
                     .overlay(content: {
-                        if color == checkedColor {
+                        if isChecked {
                             Image(systemName: "checkmark")
                                 .font(.caption.bold())
                                 .foregroundColor(.white)
@@ -241,6 +258,8 @@ struct AddNewHabit: View {
                     .onTapGesture {
                         withAnimation {
                             colorCompletion?(color)
+                            UIImpactFeedbackGenerator(style: .medium)
+                                .impactOccurred()
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -277,6 +296,7 @@ struct AddNewHabit: View {
                 
                 if forIndex > .zero {
                     Button {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         withAnimation(.easeInOut) {
                             isFocused = false
                             viewModel.remainderDates.remove(at: forIndex)
@@ -320,6 +340,8 @@ struct AddNewHabit: View {
             }
             .onTapGesture {
                 withAnimation {
+                    UIImpactFeedbackGenerator(style: .medium)
+                        .impactOccurred()
                     viewModel.showTimePicker.toggle()
                     viewModel.timePickerIndex = forIndex
                 }
@@ -376,6 +398,8 @@ struct AddNewHabit: View {
             withAnimation(.easeInOut) {
                 isFocused = false
                 viewModel.remainderDates.append(Date())
+                UIImpactFeedbackGenerator(style: .medium)
+                    .impactOccurred()
             }
         } label: {
             Label {

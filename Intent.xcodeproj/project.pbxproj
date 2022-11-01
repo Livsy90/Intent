@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
+		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
 		D6694C38290BACBD00429779 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C37290BACBD00429779 /* IntentApp.swift */; };
 		D6694C3A290BACBD00429779 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C39290BACBD00429779 /* ContentView.swift */; };
 		D6694C3C290BACBF00429779 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6694C3B290BACBF00429779 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
 		D6694C34290BACBD00429779 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6694C37290BACBD00429779 /* IntentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentApp.swift; sourceTree = "<group>"; };
 		D6694C39290BACBD00429779 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */,
+				D655209429115ACE0085AA6F /* View+Adds.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				D6F11B92290EE59200E80897 /* CreateTemplateViewModel.swift in Sources */,
 				D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */,
 				D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */,
+				D655209529115ACE0085AA6F /* View+Adds.swift in Sources */,
 				D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */,
 				D6694C3A290BACBD00429779 /* ContentView.swift in Sources */,
 				D6694C38290BACBD00429779 /* IntentApp.swift in Sources */,
