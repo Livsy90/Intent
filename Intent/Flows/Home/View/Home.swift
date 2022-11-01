@@ -29,7 +29,7 @@ struct Home: View {
                     Button {
                         viewModel.createTemplate.toggle()
                     } label: {
-                        Image(systemName: "text.badge.plus")
+                        Image(systemName: "calendar.badge.plus")
                             .font(.title3)
                             .foregroundColor(.primary)
                     }

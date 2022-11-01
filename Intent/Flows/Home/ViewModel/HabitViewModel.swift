@@ -31,9 +31,9 @@ final class HabitViewModel: ObservableObject {
     @Published var timePickerIndex: Int = .zero
     
     /// Notification Access Status
-    @Published  var notificationAccess: Bool = false
+    @Published var notificationAccess: Bool = false
     @Published var isLoading: Bool = false
-    @Published  var isFull: Bool = false
+    @Published var isFull: Bool = false
     
     init() {
         requestNotificationAccess()
@@ -42,10 +42,33 @@ final class HabitViewModel: ObservableObject {
     // MARK: Adding Habit to Database
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
-        isLoading = true
-        var total = UserDefaults.standard.notificationsCount
+        
+        // MARK: Editing Data
+        
+        let isEdit: Bool
+        var habit: Habit
+        
+        if let editHabit = editHabit {
+            habit = editHabit
+            isEdit = true
+            
+            // Removing All Pending Notifications
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
+        } else {
+            habit = Habit(context: context)
+            isEdit = false
+        }
+        
         let newCount = (remainderDates.count * weekDays.count)
+        var total = UserDefaults.standard.notificationsCount
+                
+        if isEdit {
+            total -= (editHabit?.notificationDates?.count ?? 0) * (editHabit?.weekDays?.count ?? 0)
+        }
+        
         total += newCount
+        
+        isLoading = true
         UserDefaults.standard.notificationsCount = total
         
         guard total < 65 else {
@@ -56,17 +79,6 @@ final class HabitViewModel: ObservableObject {
             return false
         }
         
-        // MARK: Editing Data
-        
-        var habit: Habit
-        if let editHabit = editHabit {
-            habit = editHabit
-            
-            // Removing All Pending Notifications
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
-        } else {
-            habit = Habit(context: context)
-        }
         habit.title = title
         habit.color = habitColor
         habit.weekDays = weekDays

@@ -60,6 +60,7 @@ struct CreateTemplateView: View {
                                 Text($0.rawValue.lowercased())
                             }
                         }
+                        .padding(.horizontal)
                         .accentColor(Color(.label))
                         .background {
                             RoundedRectangle(cornerRadius: 25, style: .continuous)
@@ -92,7 +93,7 @@ struct CreateTemplateView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding()
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Daily periodic reminders")
+                    .navigationTitle("Daily reminders")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {
