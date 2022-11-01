@@ -48,7 +48,20 @@ final class CreateTemplateViewModel: ObservableObject {
         let weekDays = Calendar.current.shortWeekdaySymbols
         let dates = datesBetween(startDate: startDate, endDate: endDate, step: step)
         
-        guard (dates.count * weekDays.count) < 64 else {
+        var total = UserDefaults.standard.notificationsCount
+        let newCount = (dates.count * weekDays.count)
+        total += newCount
+        UserDefaults.standard.notificationsCount = total
+        
+        guard total < 65 else {
+            total -= newCount
+            UserDefaults.standard.notificationsCount = total
+            isFull = true
+            isLoading = false
+            return false
+        }
+        
+        guard newCount < 65 else {
             isLoading = false
             isFull = true
             return false
@@ -132,7 +145,6 @@ final class CreateTemplateViewModel: ObservableObject {
                 let id = UUID().uuidString
                 let hour = calendar.component(.hour, from: date)
                 let min = calendar.component(.minute, from: date)
-                let sec = calendar.component(.second, from: date)
                 let day = weekdaySymbols.firstIndex { currentDay in
                     return currentDay == weekDay
                 } ?? -1
@@ -141,7 +153,6 @@ final class CreateTemplateViewModel: ObservableObject {
                     var components = DateComponents()
                     components.hour = hour
                     components.minute = min
-                    components.second = sec
                     components.weekday = day + 1
                     
                     // MARK: Thus this will Trigger Notification on Each Selected Day

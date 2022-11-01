@@ -32,6 +32,8 @@ final class HabitViewModel: ObservableObject {
     
     /// Notification Access Status
     @Published  var notificationAccess: Bool = false
+    @Published var isLoading: Bool = false
+    @Published  var isFull: Bool = false
     
     init() {
         requestNotificationAccess()
@@ -40,6 +42,19 @@ final class HabitViewModel: ObservableObject {
     // MARK: Adding Habit to Database
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
+        isLoading = true
+        var total = UserDefaults.standard.notificationsCount
+        let newCount = (remainderDates.count * weekDays.count)
+        total += newCount
+        UserDefaults.standard.notificationsCount = total
+        
+        guard total < 65 else {
+            total -= newCount
+            UserDefaults.standard.notificationsCount = total
+            isFull = true
+            isLoading = false
+            return false
+        }
         
         // MARK: Editing Data
         
@@ -90,7 +105,9 @@ final class HabitViewModel: ObservableObject {
     func deleteHabit(context: NSManagedObjectContext) -> Bool {
         if let editHabit = editHabit {
             if editHabit.isRemainderOn {
-                
+                var total = UserDefaults.standard.notificationsCount
+                total -= (editHabit.notificationDates?.count ?? 0) * (editHabit.weekDays?.count ?? 0)
+                UserDefaults.standard.notificationsCount = total
                 // Removing All Pending Notifications
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
             }
@@ -163,7 +180,6 @@ final class HabitViewModel: ObservableObject {
                 let id = UUID().uuidString
                 let hour = calendar.component(.hour, from: date)
                 let min = calendar.component(.minute, from: date)
-                let sec = calendar.component(.second, from: date)
                 let day = weekdaySymbols.firstIndex { currentDay in
                     return currentDay == weekDay
                 } ?? -1
@@ -172,7 +188,6 @@ final class HabitViewModel: ObservableObject {
                     var components = DateComponents()
                     components.hour = hour
                     components.minute = min
-                    components.second = sec
                     components.weekday = day + 1
                     
                     // MARK: Thus this will Trigger Notification on Each Selected Day

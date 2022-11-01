@@ -92,7 +92,7 @@ struct CreateTemplateView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding()
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Create with template")
+                    .navigationTitle("Daily periodic reminders")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {
@@ -135,7 +135,7 @@ struct CreateTemplateView: View {
         .onTapGesture {
             isFocused = false
         }
-        .alert("We can only schedule 64 notifications. Please change start time / end time", isPresented: $viewModel.isFull) {
+        .alert("I can only schedule 64 notifications. Please edit this template or the previous ones", isPresented: $viewModel.isFull) {
             Button("OK", role: .cancel) { }
         }
     }

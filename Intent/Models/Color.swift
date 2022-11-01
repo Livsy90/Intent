@@ -17,7 +17,7 @@ enum Colors {
     
     enum Card: String, CaseIterable {
         case blueRose
-        case creamDonut
+        case orangeJuice
         case forgetMeNot
         case latte
         case overcast
@@ -28,7 +28,7 @@ enum Colors {
             switch self {
             case .raspberrySunset:
                 return 1
-            case .creamDonut:
+            case .orangeJuice:
                 return 2
             case .forgetMeNot:
                 return 3

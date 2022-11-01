@@ -36,6 +36,7 @@ struct Home: View {
                 }
                 .padding(.bottom,10)
                 .sheet(isPresented: $viewModel.createTemplate) {
+                    viewModel.isLoading = false
                 } content: {
                     router?.createTemplateScreen()
                 }
@@ -74,7 +75,7 @@ struct Home: View {
         .sheet(isPresented: $viewModel.addNewHabit) {
             
             // MARK: Erasing All Existing Content
-            
+            viewModel.isLoading = false
             viewModel.reset()
         } content: {
             router?.addHabitScreen(viewModel: viewModel)

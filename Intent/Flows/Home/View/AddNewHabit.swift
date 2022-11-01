@@ -11,7 +11,6 @@ struct AddNewHabit: View {
     
     @ObservedObject var viewModel: HabitViewModel
     @FocusState var isFocused: Bool
-    @State var isLoading: Bool = false
     
     /// Environment Values
     @Environment(\.self) var env
@@ -134,7 +133,6 @@ struct AddNewHabit: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         Task {
-                            isLoading = true
                             if await viewModel.addHabbit(context: env.managedObjectContext) {
                                 env.dismiss()
                             }
@@ -152,7 +150,7 @@ struct AddNewHabit: View {
                     .onTapGesture {
                         isFocused = false
                     }
-            } else if isLoading {
+            } else if viewModel.isLoading {
                 ZStack {
                     Rectangle()
                         .fill(.ultraThinMaterial)
@@ -161,6 +159,9 @@ struct AddNewHabit: View {
                     ProgressView()
                 }
             }
+        }
+        .alert("I can only schedule 64 notifications. Please edit this template or the previous ones", isPresented: $viewModel.isFull) {
+            Button("OK", role: .cancel) { }
         }
     }
     
@@ -369,6 +370,8 @@ struct AddNewHabit: View {
     
     @ViewBuilder
     private func AddTimeButton() -> some View {
+        let isAvailable = viewModel.isRemainderOn && viewModel.notificationAccess && (viewModel.remainderDates.count * viewModel.weekDays.count) < 64
+        
         Button {
             withAnimation(.easeInOut) {
                 isFocused = false
@@ -384,10 +387,8 @@ struct AddNewHabit: View {
             .foregroundColor(.primary)
         }
         .padding(.top, 15)
-        .frame(height: viewModel.isRemainderOn && (viewModel.remainderDates.count * viewModel.weekDays.count) < 64 ? nil : 0)
-        .opacity(viewModel.isRemainderOn ? 1 : 0)
-        .opacity(viewModel.notificationAccess ? 1 : 0)
-        .opacity((viewModel.remainderDates.count * viewModel.weekDays.count) < 64 ? 1 : 0)
+        .frame(height: isAvailable ? nil : 0)
+        .opacity(isAvailable ? 1 : 0)
     }
     
 }
