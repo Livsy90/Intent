@@ -49,13 +49,14 @@ struct Home: View {
                         }
                         .padding(.vertical)
                     }
+                    .padding(.horizontal, 2)
                 }
                 
                 Button {
                     viewModel.addNewHabit.toggle()
                 } label: {
                     Label {
-                        Text("New habit")
+                        Text("New")
                     } icon: {
                         Image(systemName: "plus.circle")
                     }
@@ -97,7 +98,7 @@ struct Home: View {
         VStack(spacing: 6) {
             HStack{
                 Text(habit.title ?? "")
-                    .font(.callout)
+                    .font(.system(size: 14))
                     .fontWeight(.semibold)
                     .lineLimit(1)
                 
@@ -170,7 +171,7 @@ struct Home: View {
                         .clear
                     ], startPoint: .topLeading, endPoint: .bottomTrailing)
                 )
-                .blur(radius: 5)
+                .blur(radius: 2)
             
             // MARK: Borders
             RoundedRectangle(cornerRadius: 25, style: .continuous)
