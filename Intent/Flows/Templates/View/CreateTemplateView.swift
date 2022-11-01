@@ -61,7 +61,30 @@ struct CreateTemplateView: View {
                             }
                         }
                         .accentColor(Color(.label))
-                        .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        .background {
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                .fill(
+                                    .linearGradient(colors: [
+                                        .white.opacity(0.25),
+                                        .white.opacity(0.05),
+                                        .clear
+                                    ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                )
+                                .blur(radius: 5)
+                            
+                            // MARK: Borders
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                .stroke(
+                                    .linearGradient(colors: [
+                                        .white.opacity(0.6),
+                                        .clear,
+                                        .white.opacity(0.2),
+                                        .white.opacity(0.5)
+                                    ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                    lineWidth: 2
+                                )
+                            
+                        }
                         .onTapGesture {
                             isFocused = false
                         }
@@ -152,7 +175,30 @@ struct CreateTemplateView: View {
                     .frame(width: 60, height: 20)
                     .padding(.horizontal)
                     .padding(.vertical, 12)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .background {
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.25),
+                                    .white.opacity(0.05),
+                                    .clear
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .blur(radius: 5)
+                        
+                        // MARK: Borders
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .stroke(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.6),
+                                    .clear,
+                                    .white.opacity(0.2),
+                                    .white.opacity(0.5)
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                lineWidth: 2
+                            )
+                        
+                    }
                 
                 Label {
                     Text(viewModel.startDate.formatted(date: .omitted, time: .shortened))
@@ -162,7 +208,30 @@ struct CreateTemplateView: View {
                 .frame(width: 130, height: 20)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 12)
-                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .background {
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .fill(
+                            .linearGradient(colors: [
+                                .white.opacity(0.25),
+                                .white.opacity(0.05),
+                                .clear
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .blur(radius: 5)
+                    
+                    // MARK: Borders
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .stroke(
+                            .linearGradient(colors: [
+                                .white.opacity(0.6),
+                                .clear,
+                                .white.opacity(0.2),
+                                .white.opacity(0.5)
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: 2
+                        )
+                    
+                }
             }
             .onTapGesture {
                 withAnimation {
@@ -175,7 +244,30 @@ struct CreateTemplateView: View {
                     .frame(width: 60, height: 20)
                     .padding(.horizontal)
                     .padding(.vertical, 12)
-                    .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                    .background {
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.25),
+                                    .white.opacity(0.05),
+                                    .clear
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .blur(radius: 5)
+                        
+                        // MARK: Borders
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .stroke(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.6),
+                                    .clear,
+                                    .white.opacity(0.2),
+                                    .white.opacity(0.5)
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                lineWidth: 2
+                            )
+                        
+                    }
                 Label {
                     Text(viewModel.endDate.formatted(date: .omitted, time: .shortened))
                 } icon: {
@@ -184,7 +276,30 @@ struct CreateTemplateView: View {
                 .frame(width: 130, height: 20)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 12)
-                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .background {
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .fill(
+                            .linearGradient(colors: [
+                                .white.opacity(0.25),
+                                .white.opacity(0.05),
+                                .clear
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .blur(radius: 5)
+                    
+                    // MARK: Borders
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .stroke(
+                            .linearGradient(colors: [
+                                .white.opacity(0.6),
+                                .clear,
+                                .white.opacity(0.2),
+                                .white.opacity(0.5)
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: 2
+                        )
+                    
+                }
             }
             .onTapGesture {
                 withAnimation {

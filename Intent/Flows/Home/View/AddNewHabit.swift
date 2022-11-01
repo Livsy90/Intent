@@ -40,7 +40,7 @@ struct AddNewHabit: View {
                                 Text("Frequency")
                                     .font(.callout.bold())
                                 let weekDays = Calendar.current.shortWeekdaySymbols
-                                HStack(spacing: 10) {
+                                HStack(spacing: 6) {
                                     ForEach(weekDays, id: \.self) { day in
                                         let index = viewModel.weekDays.firstIndex { value in
                                             return value.caseInsensitiveCompare(day) == .orderedSame
@@ -48,7 +48,6 @@ struct AddNewHabit: View {
                                         
                                         Text(day.capitalized)
                                             .font(.system(size: 13))
-                                            .fontWeight(.semibold)
                                             .frame(maxWidth: .infinity)
                                             .padding(.vertical, 12)
                                             .foregroundColor(index != -1 ? .white : .primary)
@@ -180,8 +179,24 @@ struct AddNewHabit: View {
             }
             .frame(maxWidth: .infinity,alignment: .leading)
             
+            let isOnColor = viewModel.isRemainderOn ? Color(.green) : Color(.white)
+
+            
             Toggle(isOn: $viewModel.isRemainderOn) {}
                 .labelsHidden()
+                .background {
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .stroke(
+                            .linearGradient(colors: [
+                                isOnColor.opacity(0.6),
+                                isOnColor.opacity(0.4),
+                                .clear,
+                                .white.opacity(0.2),
+                                .white.opacity(0.5)
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: 4
+                        )
+                }
         }
         .opacity(viewModel.notificationAccess ? 1 : 0)
     }
@@ -197,9 +212,24 @@ struct AddNewHabit: View {
         HStack(spacing: 0) {
             ForEach(1...7, id: \.self) { index in
                 let color = Colors.Card.color(for: index)
+                let uiColor = UIColor(named: color) ?? .clear
+                
                 Circle()
                     .fill(Color(color))
                     .frame(width: 30, height: 30)
+                    .background {
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .stroke(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.6),
+                                    .clear,
+                                    .init(uiColor: uiColor).opacity(0.2),
+                                    .init(uiColor: uiColor).opacity(0.5),
+                                    .init(uiColor: uiColor).opacity(0.8)
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                lineWidth: 5
+                            )
+                    }
                     .overlay(content: {
                         if color == checkedColor {
                             Image(systemName: "checkmark")
@@ -246,7 +276,10 @@ struct AddNewHabit: View {
                 
                 if forIndex > .zero {
                     Button {
-                        viewModel.remainderDates.remove(at: forIndex)
+                        withAnimation(.easeInOut) {
+                            isFocused = false
+                            viewModel.remainderDates.remove(at: forIndex)
+                        }
                     } label: {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
@@ -259,7 +292,31 @@ struct AddNewHabit: View {
             }
             .padding(.vertical, 12)
             .padding(.horizontal, 10)
-            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+            .background {
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(
+                        .linearGradient(colors: [
+                            .white.opacity(0.25),
+                            .white.opacity(0.05),
+                            .clear
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .blur(radius: 5)
+                
+                // MARK: Borders
+                let color: Color = forIndex > .zero ? .red : .white
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .stroke(
+                        .linearGradient(colors: [
+                            .white.opacity(0.6),
+                            .clear,
+                            forIndex > .zero ? .purple.opacity(0.2) : color.opacity(0.2),
+                            color.opacity(0.5)
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 2
+                    )
+                
+            }
             .onTapGesture {
                 withAnimation {
                     viewModel.showTimePicker.toggle()
@@ -339,5 +396,23 @@ struct AddNewHabit_Previews: PreviewProvider {
     static var previews: some View {
         AddNewHabit(viewModel: HabitViewModel())
             .preferredColorScheme(.dark)
+    }
+}
+
+// MARK: Custom Blur View
+// With The Help of UiVisualEffect View
+struct CustomBlurView: UIViewRepresentable{
+    var effect: UIBlurEffect.Style
+    var onChange: (UIVisualEffectView)->()
+    
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: effect))
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        DispatchQueue.main.async {
+            onChange(uiView)
+        }
     }
 }
