@@ -27,6 +27,7 @@ struct AddNewHabit: View {
                             // MARK: Habit Color Picker
                             
                             AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                                isFocused = false
                                 viewModel.habitColor = color
                             }
                             .padding(.vertical)
@@ -55,6 +56,7 @@ struct AddNewHabit: View {
                                                     .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
                                             }
                                             .onTapGesture {
+                                                isFocused = false
                                                 UIImpactFeedbackGenerator(style: .medium)
                                                     .impactOccurred()
                                                 withAnimation {

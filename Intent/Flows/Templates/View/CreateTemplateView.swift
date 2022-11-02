@@ -37,12 +37,10 @@ struct CreateTemplateView: View {
                         // MARK: Habit Color Picker
                         
                         AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                            isFocused = false
                             viewModel.habitColor = color
                         }
                         .padding(.vertical)
-                        .onTapGesture {
-                            isFocused = false
-                        }
                         
                         Divider()
                         
