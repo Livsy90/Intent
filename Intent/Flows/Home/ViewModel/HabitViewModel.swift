@@ -34,6 +34,7 @@ final class HabitViewModel: ObservableObject {
     @Published var notificationAccess: Bool = false
     @Published var isLoading: Bool = false
     @Published var isFull: Bool = false
+    @Published var isShowDeleteAlert: Bool = false
     
     init() {
         requestNotificationAccess()

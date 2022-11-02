@@ -22,6 +22,8 @@ struct AddNewHabit: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 15) {
                             TextFieldsStack()
+                                .id(0)
+                            
                             Divider()
                             
                             // MARK: Habit Color Picker
@@ -89,6 +91,7 @@ struct AddNewHabit: View {
                                 .id(1)
                         }
                     }
+                    .scrollDismissesKeyboard(.interactively)
                     .onChange(of: viewModel.remainderDates) { _ in
                         withAnimation {
                             value.scrollTo(1)
@@ -96,7 +99,7 @@ struct AddNewHabit: View {
                     }
                     .onChange(of: viewModel.isRemainderOn) { _ in
                         withAnimation {
-                            value.scrollTo(1)
+                            viewModel.isRemainderOn ? value.scrollTo(1) : value.scrollTo(0)
                         }
                     }
                     AddTimeButton()
@@ -124,9 +127,7 @@ struct AddNewHabit: View {
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        if viewModel.deleteHabit(context: env.managedObjectContext) {
-                            env.dismiss()
-                        }
+                        viewModel.isShowDeleteAlert = true
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -166,6 +167,14 @@ struct AddNewHabit: View {
         }
         .alert("I can only schedule 64 notifications. Please edit this template or the previous ones", isPresented: $viewModel.isFull) {
             Button("OK", role: .cancel) { }
+        }
+        .alert("Are you sure?", isPresented: $viewModel.isShowDeleteAlert) {
+            Button("No", role: .cancel) {}
+            Button("Yes", role: .destructive) {
+                if viewModel.deleteHabit(context: env.managedObjectContext) {
+                    env.dismiss()
+                }
+            }
         }
     }
     

@@ -119,6 +119,7 @@ struct CreateTemplateView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .overlay {
             if viewModel.showStartTimePicker || viewModel.showEndTimePicker {
                 DatePickerView(isStart: viewModel.showStartTimePicker)
