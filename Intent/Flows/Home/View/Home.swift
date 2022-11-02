@@ -199,7 +199,6 @@ struct Home: View {
                     ], startPoint: .topLeading, endPoint: .bottomTrailing),
                     lineWidth: 2
                 )
-            
         }
         .onTapGesture {
             // MARK: Editing Habit

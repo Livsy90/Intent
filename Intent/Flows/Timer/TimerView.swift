@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TimerView: View {
     
-    @ObservedObject var viewModel: TimverViewModel = .init()
+    @ObservedObject var viewModel: TimerViewModel = .init()
     
     var body: some View {
         VStack{
@@ -23,7 +23,7 @@ struct TimerView: View {
                     
                     // MARK: Timer Ring
                     
-                    ZStack{
+                    ZStack {
                         Circle()
                             .fill(.white.opacity(0.03))
                             .padding(-40)
@@ -88,8 +88,27 @@ struct TimerView: View {
                             .foregroundColor(.white)
                             .frame(width: 80, height: 80)
                             .background {
-                                Circle()
-                                    .fill(Color(Colors.Card.plum.rawValue))
+                                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                    .fill(
+                                        .linearGradient(colors: [
+                                            .white.opacity(0.25),
+                                            .white.opacity(0.05),
+                                            .clear
+                                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    )
+                                    .blur(radius: 2)
+                                
+                                // MARK: Borders
+                                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                    .stroke(
+                                        .linearGradient(colors: [
+                                            .white.opacity(0.6),
+                                            .clear,
+                                            .purple.opacity(0.2),
+                                            .purple.opacity(0.5)
+                                        ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                        lineWidth: 2
+                                    )
                             }
                             .shadow(color: Color(Colors.Card.plum.rawValue), radius: 8, x: 0, y: 0)
                     }
@@ -148,7 +167,7 @@ struct TimerView: View {
             
             HStack(spacing: 15){
                 Text("\(viewModel.hour) hr")
-                    .font(.title3)
+                    .font(.system(size: 12))
                     .fontWeight(.semibold)
                     .foregroundColor(.white.opacity(0.3))
                     .padding(.horizontal, 20)
@@ -164,7 +183,7 @@ struct TimerView: View {
                     }
                 
                 Text("\(viewModel.minutes) min")
-                    .font(.title3)
+                    .font(.system(size: 12))
                     .fontWeight(.semibold)
                     .foregroundColor(.white.opacity(0.3))
                     .padding(.horizontal,20)
@@ -180,7 +199,7 @@ struct TimerView: View {
                     }
                 
                 Text("\(viewModel.seconds) sec")
-                    .font(.title3)
+                    .font(.system(size: 12))
                     .fontWeight(.semibold)
                     .foregroundColor(.white.opacity(0.3))
                     .padding(.horizontal,20)
@@ -206,9 +225,29 @@ struct TimerView: View {
                     .foregroundColor(.white)
                     .padding(.vertical)
                     .padding(.horizontal, 100)
-                    .background{
-                        Capsule()
-                            .fill(Color(Colors.Card.plum.rawValue))
+                    .background {
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.25),
+                                    .white.opacity(0.05),
+                                    .clear
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .blur(radius: 2)
+                        
+                        // MARK: Borders
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .stroke(
+                                .linearGradient(colors: [
+                                    .white.opacity(0.6),
+                                    .clear,
+                                    .purple.opacity(0.2),
+                                    .purple.opacity(0.5)
+                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                lineWidth: 2
+                            )
+                        
                     }
             }
             .disabled(viewModel.seconds == 0)

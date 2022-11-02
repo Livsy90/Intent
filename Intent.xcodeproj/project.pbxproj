@@ -23,7 +23,7 @@
 		D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFA290BC1F80037DC5B /* Home.swift */; };
 		D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */; };
 		D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */; };
-		D6EEDC7D2912D19F001D3689 /* TimverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEDC7C2912D19F001D3689 /* TimverViewModel.swift */; };
+		D6EEDC7D2912D19F001D3689 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEDC7C2912D19F001D3689 /* TimerViewModel.swift */; };
 		D6EEDC7F2912D201001D3689 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEDC7E2912D201001D3689 /* TimerView.swift */; };
 		D6F11B8E290EC23B00E80897 /* CreateTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F11B8D290EC23A00E80897 /* CreateTemplateView.swift */; };
 		D6F11B92290EE59200E80897 /* CreateTemplateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F11B91290EE59200E80897 /* CreateTemplateViewModel.swift */; };
@@ -67,7 +67,7 @@
 		D6B63DFA290BC1F80037DC5B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewModel.swift; sourceTree = "<group>"; };
 		D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHabit.swift; sourceTree = "<group>"; };
-		D6EEDC7C2912D19F001D3689 /* TimverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimverViewModel.swift; sourceTree = "<group>"; };
+		D6EEDC7C2912D19F001D3689 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		D6EEDC7E2912D201001D3689 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		D6F11B8D290EC23A00E80897 /* CreateTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTemplateView.swift; sourceTree = "<group>"; };
 		D6F11B91290EE59200E80897 /* CreateTemplateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTemplateViewModel.swift; sourceTree = "<group>"; };
@@ -226,7 +226,7 @@
 		D6EEDC7B2912D190001D3689 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
-				D6EEDC7C2912D19F001D3689 /* TimverViewModel.swift */,
+				D6EEDC7C2912D19F001D3689 /* TimerViewModel.swift */,
 				D6EEDC7E2912D201001D3689 /* TimerView.swift */,
 			);
 			path = Timer;
@@ -400,7 +400,7 @@
 				D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */,
 				D655209529115ACE0085AA6F /* View+Adds.swift in Sources */,
 				D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */,
-				D6EEDC7D2912D19F001D3689 /* TimverViewModel.swift in Sources */,
+				D6EEDC7D2912D19F001D3689 /* TimerViewModel.swift in Sources */,
 				D6694C3A290BACBD00429779 /* ContentView.swift in Sources */,
 				D6694C38290BACBD00429779 /* IntentApp.swift in Sources */,
 			);

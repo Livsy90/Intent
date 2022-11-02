@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class TimverViewModel: NSObject, ObservableObject {
+final class TimerViewModel: NSObject, ObservableObject {
     
     // MARK: Timer Properties
     
@@ -67,9 +67,27 @@ final class TimverViewModel: NSObject, ObservableObject {
         minutes = (totalSeconds / 60) % 60
         seconds = (totalSeconds % 60)
         timerStringValue = "\(hour == 0 ? "" : "\(hour):")\(minutes >= 10 ? "\(minutes)":"0\(minutes)"):\(seconds >= 10 ? "\(seconds)":"0\(seconds)")"
-        if hour == 0 && seconds == 0 && minutes == 0{
+        if hour == 0 && seconds == 0 && minutes == 0 {
             isStarted = false
             isFinished = true
+            
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            }
         }
     }
     
