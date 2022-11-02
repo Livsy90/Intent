@@ -170,10 +170,22 @@ struct TimerView: View {
         VStack(spacing: 15) {
             Text("Set timer")
                 .font(.title2.bold())
-                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .overlay(alignment: .leading) {
+                    Button {
+                        viewModel.hour = 0
+                        viewModel.minutes = 0
+                        viewModel.seconds = 0
+                        viewModel.addNewTimer = false
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .font(.title3)
+                            .foregroundColor(.primary)
+                    }
+                }
                 .padding(.top, 10)
             
-            HStack(spacing: 10) {
+            HStack(alignment: .center, spacing: 60) {
                 
                 Menu("\(viewModel.hour) hr") {
                     ContextMenuOptions(maxValue: 12, hint: "hr") { value in
@@ -183,12 +195,10 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .frame(width: 95, height: 50, alignment: .center)
                 .background{
                     Capsule()
                         .fill(.white.opacity(0.07))
+                        .frame(width: 80, height: 50, alignment: .center)
                 }
                 
                 Menu("\(viewModel.minutes) min") {
@@ -199,12 +209,10 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .frame(width: 95, height: 50, alignment: .center)
                 .background{
                     Capsule()
                         .fill(.white.opacity(0.07))
+                        .frame(width: 80, height: 50, alignment: .center)
                 }
                 
                 Menu("\(viewModel.seconds) sec") {
@@ -215,12 +223,10 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .frame(width: 95, height: 50, alignment: .center)
                 .background{
                     Capsule()
                         .fill(.white.opacity(0.07))
+                        .frame(width: 80, height: 50, alignment: .center)
                 }
             }
             .padding(.top, 20)
