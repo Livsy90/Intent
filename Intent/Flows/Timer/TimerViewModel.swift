@@ -9,8 +9,6 @@ import SwiftUI
 
 final class TimerViewModel: NSObject, ObservableObject {
     
-    // MARK: Timer Properties
-    
     @Published var progress: CGFloat = 1
     @Published var timerStringValue: String = "00:00"
     @Published var isStarted: Bool = false
@@ -23,11 +21,8 @@ final class TimerViewModel: NSObject, ObservableObject {
     // MARK: Total Seconds
     @Published var totalSeconds: Int = 0
     @Published var staticTotalSeconds: Int = 0
-    
-    // MARK: Post Timer Properties
     @Published var isFinished: Bool = false
 
-    // MARK: Starting Timer
     func startTimer(){
         withAnimation(.easeInOut(duration: 0.25)){isStarted = true}
         // MARK: Setting String Time Value
@@ -37,10 +32,8 @@ final class TimerViewModel: NSObject, ObservableObject {
         staticTotalSeconds = totalSeconds
         addNewTimer = false
     }
-    
-    // MARK: Stopping Timer
-    
-    func stopTimer(){
+        
+    func stopTimer() {
         withAnimation{
             isStarted = false
             hour = 0
@@ -52,10 +45,8 @@ final class TimerViewModel: NSObject, ObservableObject {
         staticTotalSeconds = 0
         timerStringValue = "00:00"
     }
-    
-    // MARK: Updating Timer
-    
-    func updateTimer(){
+        
+    func updateTimer() {
         if totalSeconds > 0{
             totalSeconds -= 1
         }

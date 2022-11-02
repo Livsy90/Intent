@@ -10,27 +10,37 @@ import SwiftUI
 struct TimerView: View {
     
     @ObservedObject var viewModel: TimerViewModel = .init()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
             Text("Timer")
                 .font(.title2.bold())
-                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .overlay(alignment: .leading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .font(.title3)
+                            .foregroundColor(.primary)
+                    }
+                }
+                .padding(.bottom, 10)
             
             GeometryReader { proxy in
                 
                 VStack(spacing: 15) {
                     
-                    // MARK: Timer Ring
                     
                     ZStack {
                         Circle()
-                            .fill(.white.opacity(0.03))
+                            .fill(.purple.opacity(0.3))
                             .padding(-40)
                         
                         Circle()
                             .trim(from: 0, to: viewModel.progress)
-                            .stroke(.white.opacity(0.03), lineWidth: 80)
+                            .stroke(.purple.opacity(0.3), lineWidth: 80)
                         
                         // MARK: Shadow
                         Circle()
@@ -89,13 +99,7 @@ struct TimerView: View {
                             .frame(width: 80, height: 80)
                             .background {
                                 RoundedRectangle(cornerRadius: 25, style: .continuous)
-                                    .fill(
-                                        .linearGradient(colors: [
-                                            .white.opacity(0.25),
-                                            .white.opacity(0.05),
-                                            .clear
-                                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                    )
+                                    .fill(Colors.Background.dark)
                                     .blur(radius: 2)
                                 
                                 // MARK: Borders
@@ -118,7 +122,8 @@ struct TimerView: View {
         }
         .padding()
         .background {
-            Colors.Background.dark
+            InteractiveBackgroundView()
+                .padding(.top, 50)
                 .ignoresSafeArea()
         }
         .overlay(content: {
@@ -159,60 +164,64 @@ struct TimerView: View {
     
     @ViewBuilder
     private func NewTimerView() -> some View {
-        VStack(spacing: 15){
-            Text("Add New Timer")
+        
+        let isEnabledStatus = viewModel.seconds != 0 || viewModel.minutes != 0 || viewModel.hour != 0
+        
+        VStack(spacing: 15) {
+            Text("Set timer")
                 .font(.title2.bold())
                 .foregroundColor(.white)
-                .padding(.top,10)
+                .padding(.top, 10)
             
-            HStack(spacing: 15){
-                Text("\(viewModel.hour) hr")
-                    .font(.system(size: 12))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white.opacity(0.3))
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background{
-                        Capsule()
-                            .fill(.white.opacity(0.07))
-                    }
-                    .contextMenu{
-                        ContextMenuOptions(maxValue: 12, hint: "hr") { value in
-                            viewModel.hour = value
-                        }
-                    }
+            HStack(spacing: 10) {
                 
-                Text("\(viewModel.minutes) min")
-                    .font(.system(size: 12))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white.opacity(0.3))
-                    .padding(.horizontal,20)
-                    .padding(.vertical,12)
-                    .background{
-                        Capsule()
-                            .fill(.white.opacity(0.07))
+                Menu("\(viewModel.hour) hr") {
+                    ContextMenuOptions(maxValue: 12, hint: "hr") { value in
+                        viewModel.hour = value
                     }
-                    .contextMenu{
-                        ContextMenuOptions(maxValue: 60, hint: "min") { value in
-                            viewModel.minutes = value
-                        }
-                    }
+                }
+                .font(.system(size: 14))
+                .fontWeight(.semibold)
+                .foregroundColor(.white.opacity(0.5))
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .frame(width: 95, height: 50, alignment: .center)
+                .background{
+                    Capsule()
+                        .fill(.white.opacity(0.07))
+                }
                 
-                Text("\(viewModel.seconds) sec")
-                    .font(.system(size: 12))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white.opacity(0.3))
-                    .padding(.horizontal,20)
-                    .padding(.vertical,12)
-                    .background{
-                        Capsule()
-                            .fill(.white.opacity(0.07))
+                Menu("\(viewModel.minutes) min") {
+                    ContextMenuOptions(maxValue: 60, hint: "min") { value in
+                        viewModel.minutes = value
                     }
-                    .contextMenu{
-                        ContextMenuOptions(maxValue: 60, hint: "sec") { value in
-                            viewModel.seconds = value
-                        }
+                }
+                .font(.system(size: 14))
+                .fontWeight(.semibold)
+                .foregroundColor(.white.opacity(0.5))
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .frame(width: 95, height: 50, alignment: .center)
+                .background{
+                    Capsule()
+                        .fill(.white.opacity(0.07))
+                }
+                
+                Menu("\(viewModel.seconds) sec") {
+                    ContextMenuOptions(maxValue: 60, hint: "sec") { value in
+                        viewModel.seconds = value
                     }
+                }
+                .font(.system(size: 14))
+                .fontWeight(.semibold)
+                .foregroundColor(.white.opacity(0.5))
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .frame(width: 95, height: 50, alignment: .center)
+                .background{
+                    Capsule()
+                        .fill(.white.opacity(0.07))
+                }
             }
             .padding(.top, 20)
             
@@ -223,25 +232,24 @@ struct TimerView: View {
                     .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
+                    .opacity(isEnabledStatus ? 1 : 0.2)
                     .padding(.vertical)
                     .padding(.horizontal, 100)
                     .background {
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(
                                 .linearGradient(colors: [
-                                    .white.opacity(0.25),
-                                    .white.opacity(0.05),
-                                    .clear
+                                    .purple.opacity(0.25),
+                                    .purple.opacity(0.09),
+                                    .purple.opacity(0.25)
                                 ], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
                             .blur(radius: 2)
                         
-                        // MARK: Borders
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .stroke(
                                 .linearGradient(colors: [
-                                    .white.opacity(0.6),
-                                    .clear,
+                                    .purple.opacity(0.6),
                                     .purple.opacity(0.2),
                                     .purple.opacity(0.5)
                                 ], startPoint: .topLeading, endPoint: .bottomTrailing),
@@ -250,9 +258,10 @@ struct TimerView: View {
                         
                     }
             }
-            .disabled(viewModel.seconds == 0)
-            .opacity(viewModel.seconds == 0 ? 0.5 : 1)
+            .disabled(!isEnabledStatus)
+            .opacity(!isEnabledStatus ? 0.5 : 1)
             .padding(.top)
+            .glow(color: isEnabledStatus ? .purple : .clear, radius: isEnabledStatus ? 5 : 0)
         }
         .padding()
         .frame(maxWidth: .infinity)
@@ -262,9 +271,7 @@ struct TimerView: View {
                 .ignoresSafeArea()
         }
     }
-    
-    // MARK: Reusable Context Menu Options
-    
+        
     @ViewBuilder
     private func ContextMenuOptions(
         maxValue: Int,
@@ -277,5 +284,63 @@ struct TimerView: View {
                 onClick(value)
             }
         }
+    }
+}
+
+import SwiftUI
+
+struct InteractiveBackgroundView: View {
+        
+    @GestureState var location: CGPoint = .zero
+    
+    var body: some View {
+        GeometryReader { proxy in
+            let size = proxy.size
+            let width = (size.width / 10)
+            let itemCount = Int((size.height / width).rounded()) * 10
+
+            LinearGradient(colors: [
+                Colors.Card.plum.color, Colors.Card.blueRose.color, .indigo, .pink, Colors.Card.plum.color
+            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .mask {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 10), spacing: 0) {
+                    ForEach(0..<itemCount,id: \.self) { _ in
+                        GeometryReader { innerProxy in
+                            let rect = innerProxy.frame(in: .named("GESTURE"))
+                            let scale = itemScale(rect: rect, size: size)
+                            
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(.orange)
+                                .scaleEffect(scale)
+                        }
+                        .padding(5)
+                        .frame(height: width)
+                    }
+                }
+            }
+        }
+        .padding(15)
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .updating($location, body: { value, out, _ in
+                    out = value.location
+                })
+        )
+        .coordinateSpace(name: "GESTURE")
+        .preferredColorScheme(.dark)
+        .animation(.easeInOut, value: location == .zero)
+    }
+    
+    private func itemScale(rect: CGRect,size: CGSize) -> CGFloat{
+        let a = location.x - rect.midX
+        let b = location.y - rect.midY
+        
+        let root = sqrt((a * a) + (b * b))
+        let diagonalValue = sqrt((size.width * size.width) + (size.height * size.height))
+        
+        let scale = root / (diagonalValue / 2)
+        let modifiedScale = location == .zero ? 1 : (1 - scale)
+                
+        return modifiedScale > 0 ? modifiedScale : 0.001
     }
 }

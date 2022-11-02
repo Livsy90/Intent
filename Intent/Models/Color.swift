@@ -24,6 +24,10 @@ enum Colors {
         case raspberrySunset
         case youngLeaf
         
+        var color: Color {
+            return Color(self.rawValue)
+        }
+        
         var index: Int {
             switch self {
             case .raspberrySunset:
