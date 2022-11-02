@@ -25,6 +25,7 @@ final class HabitViewModel: ObservableObject {
     @Published var remainderDate: Date = Date()
     @Published var remainderDates: [Date] = [Date()]
     @Published var createTemplate: Bool = false
+    @Published var isShowTimer: Bool = false
     
     /// Remainder Time Picker
     @Published var showTimePicker: Bool = false

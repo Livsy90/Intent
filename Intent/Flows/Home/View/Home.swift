@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-protocol HomeScreenRouter: AnyObject {
-    func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit
-    func createTemplateScreen() -> CreateTemplateView
-}
-
 struct Home: View {
     
     @FetchRequest(entity: Habit.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Habit.dateAdded, ascending: false)], animation: .easeInOut) var habits: FetchedResults<Habit>
@@ -25,6 +20,22 @@ struct Home: View {
             Text("Intent")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity)
+                .overlay(alignment: .leading) {
+                    Button {
+                        viewModel.isShowTimer.toggle()
+                        UIImpactFeedbackGenerator(style: .medium)
+                            .impactOccurred()
+                    } label: {
+                        Image(systemName: "timer")
+                            .font(.title3)
+                            .foregroundColor(.primary)
+                    }
+                }
+                .padding(.bottom, 10)
+                .fullScreenCover(isPresented: $viewModel.isShowTimer) {
+                } content: {
+                    router?.timerScreen()
+                }
                 .overlay(alignment: .trailing) {
                     Button {
                         viewModel.createTemplate.toggle()
@@ -36,7 +47,7 @@ struct Home: View {
                             .foregroundColor(.primary)
                     }
                 }
-                .padding(.bottom,10)
+                .padding(.bottom, 10)
                 .fullScreenCover(isPresented: $viewModel.createTemplate) {
                     viewModel.isLoading = false
                 } content: {

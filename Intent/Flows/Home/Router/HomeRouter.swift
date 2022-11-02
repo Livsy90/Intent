@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+protocol HomeScreenRouter: AnyObject {
+    func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit
+    func createTemplateScreen() -> CreateTemplateView
+    func timerScreen() -> TimerView
+}
+
 final class HomeRouter: ObservableObject {
     
     // MARK: - Methods
@@ -31,12 +37,22 @@ struct HomeRouterView: View {
 }
 
 extension HomeRouter: HomeScreenRouter {
+    
+    
+    
     @ViewBuilder
     func addHabitScreen(viewModel: HabitViewModel) -> AddNewHabit {
         AddNewHabit(viewModel: viewModel)
     }
     
+    @ViewBuilder
     func createTemplateScreen() -> CreateTemplateView {
         CreateTemplateView(viewModel: .init())
     }
+    
+    @ViewBuilder
+    func timerScreen() -> TimerView {
+        TimerView(viewModel: .init())
+    }
+    
 }
