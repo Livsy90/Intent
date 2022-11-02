@@ -17,103 +17,108 @@ struct CreateTemplateView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollViewReader { value in
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 15) {
-                        TextField("Title", text: $viewModel.title)
-                            .focused($isFocused)
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Colors.Background.semiDark, Colors.Background.dark, Colors.Background.light]), startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+                
+                ScrollViewReader { value in
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 15) {
+                            TextField("Title", text: $viewModel.title)
+                                .focused($isFocused)
+                                .padding(.horizontal)
+                                .padding(.vertical, 10)
+                                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                            
+                            TextField("Remainder text", text: $viewModel.remainderText)
+                                .focused($isFocused)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 12)
+                                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                            
+                            Divider()
+                            
+                            // MARK: Habit Color Picker
+                            
+                            AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                                isFocused = false
+                                viewModel.habitColor = color
+                            }
+                            .padding(.vertical)
+                            
+                            Divider()
+                            
+                            RemainderTimeView()
+                                .onTapGesture {
+                                    isFocused = false
+                                }
+                            
+                            Divider()
+                            
+                            Text("Repeat every")
+                            
+                            Picker("Repeat every", selection: $viewModel.step) {
+                                ForEach(Step.allCases, id: \.self) {
+                                    Text($0.rawValue.lowercased())
+                                }
+                            }
+                            .frame(width: 150)
                             .padding(.horizontal)
-                            .padding(.vertical, 10)
-                            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                        
-                        TextField("Remainder text", text: $viewModel.remainderText)
-                            .focused($isFocused)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 12)
-                            .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                        
-                        Divider()
-                        
-                        // MARK: Habit Color Picker
-                        
-                        AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
-                            isFocused = false
-                            viewModel.habitColor = color
-                        }
-                        .padding(.vertical)
-                        
-                        Divider()
-                        
-                        RemainderTimeView()
+                            .accentColor(Color(.label))
+                            .background {
+                                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                    .fill(
+                                        .linearGradient(colors: [
+                                            .white.opacity(0.25),
+                                            .white.opacity(0.05),
+                                            .clear
+                                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    )
+                                    .blur(radius: 5)
+                                
+                                // MARK: Borders
+                                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                    .stroke(
+                                        .linearGradient(colors: [
+                                            .white.opacity(0.6),
+                                            .clear,
+                                            .white.opacity(0.2),
+                                            .white.opacity(0.5)
+                                        ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                        lineWidth: 2
+                                    )
+                                
+                            }
                             .onTapGesture {
                                 isFocused = false
                             }
-                        
-                        Divider()
-                        
-                        Text("Repeat every")
-                        
-                        Picker("Repeat every", selection: $viewModel.step) {
-                            ForEach(Step.allCases, id: \.self) {
-                                Text($0.rawValue.lowercased())
+                        }
+                        .frame(maxHeight: .infinity, alignment: .top)
+                        .padding()
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Daily reminders")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button {
+                                    env.dismiss()
+                                } label: {
+                                    Image(systemName: "xmark.circle")
+                                }
+                                .tint(.primary)
                             }
-                        }
-                        .frame(width: 150)
-                        .padding(.horizontal)
-                        .accentColor(Color(.label))
-                        .background {
-                            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                                .fill(
-                                    .linearGradient(colors: [
-                                        .white.opacity(0.25),
-                                        .white.opacity(0.05),
-                                        .clear
-                                    ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                )
-                                .blur(radius: 5)
                             
-                            // MARK: Borders
-                            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                                .stroke(
-                                    .linearGradient(colors: [
-                                        .white.opacity(0.6),
-                                        .clear,
-                                        .white.opacity(0.2),
-                                        .white.opacity(0.5)
-                                    ], startPoint: .topLeading, endPoint: .bottomTrailing),
-                                    lineWidth: 2
-                                )
-                            
-                        }
-                        .onTapGesture {
-                            isFocused = false
-                        }
-                    }
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .padding()
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Daily reminders")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                env.dismiss()
-                            } label: {
-                                Image(systemName: "xmark.circle")
-                            }
-                            .tint(.primary)
-                        }
-                        
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") {
-                                Task {
-                                    if await viewModel.addHabbit(context: env.managedObjectContext) {
-                                        env.dismiss()
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    Task {
+                                        if await viewModel.addHabbit(context: env.managedObjectContext) {
+                                            env.dismiss()
+                                        }
                                     }
                                 }
+                                .tint(.primary)
+                                .disabled(!viewModel.doneStatus())
+                                .opacity(viewModel.doneStatus() ? 1 : 0.6)
                             }
-                            .tint(.primary)
-                            .disabled(!viewModel.doneStatus())
-                            .opacity(viewModel.doneStatus() ? 1 : 0.6)
                         }
                     }
                 }
@@ -123,6 +128,9 @@ struct CreateTemplateView: View {
         .overlay {
             if viewModel.showStartTimePicker || viewModel.showEndTimePicker {
                 DatePickerView(isStart: viewModel.showStartTimePicker)
+                    .onTapGesture {
+                        isFocused = false
+                    }
             } else if viewModel.isLoading {
                 ZStack {
                     Rectangle()
@@ -132,9 +140,6 @@ struct CreateTemplateView: View {
                     ProgressView()
                 }
             }
-        }
-        .onTapGesture {
-            isFocused = false
         }
         .alert("I can only schedule 64 notifications. Please edit this template or the previous ones", isPresented: $viewModel.isFull) {
             Button("OK", role: .cancel) { }

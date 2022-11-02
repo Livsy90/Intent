@@ -17,135 +17,141 @@ struct AddNewHabit: View {
     
     var body: some View {
         NavigationStack {
-            ScrollViewReader { value in
-                VStack {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 15) {
-                            TextFieldsStack()
-                                .id(0)
-                            
-                            Divider()
-                            
-                            // MARK: Habit Color Picker
-                            
-                            AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
-                                isFocused = false
-                                viewModel.habitColor = color
-                            }
-                            .padding(.vertical)
-                            
-                            Divider()
-                            
-                            // MARK: Frequency Selection
-                            
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Frequency")
-                                    .font(.callout.bold())
-                                let weekDays = Calendar.current.shortWeekdaySymbols
-                                HStack(spacing: 6) {
-                                    ForEach(weekDays, id: \.self) { day in
-                                        let index = viewModel.weekDays.firstIndex { value in
-                                            return value.caseInsensitiveCompare(day) == .orderedSame
-                                        } ?? -1
-                                        
-                                        Text(day.capitalized)
-                                            .font(.system(size: 13))
-                                            .frame(maxWidth: .infinity)
-                                            .padding(.vertical, 12)
-                                            .foregroundColor(index != -1 ? .white : .primary)
-                                            .background {
-                                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                    .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
-                                            }
-                                            .onTapGesture {
-                                                isFocused = false
-                                                UIImpactFeedbackGenerator(style: .medium)
-                                                    .impactOccurred()
-                                                withAnimation {
-                                                    if index != -1{
-                                                        viewModel.weekDays.remove(at: index)
-                                                    } else {
-                                                        viewModel.weekDays.append(day)
+            
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Colors.Background.semiDark, Colors.Background.dark, Colors.Background.light]), startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+                
+                ScrollViewReader { value in
+                    VStack {
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack(spacing: 15) {
+                                TextFieldsStack()
+                                    .id(0)
+                                
+                                Divider()
+                                
+                                // MARK: Habit Color Picker
+                                
+                                AddNewHabit.ColorPickerView(checkedColor: viewModel.habitColor) { color in
+                                    isFocused = false
+                                    viewModel.habitColor = color
+                                }
+                                .padding(.vertical)
+                                
+                                Divider()
+                                
+                                // MARK: Frequency Selection
+                                
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Frequency")
+                                        .font(.callout.bold())
+                                    let weekDays = Calendar.current.shortWeekdaySymbols
+                                    HStack(spacing: 6) {
+                                        ForEach(weekDays, id: \.self) { day in
+                                            let index = viewModel.weekDays.firstIndex { value in
+                                                return value.caseInsensitiveCompare(day) == .orderedSame
+                                            } ?? -1
+                                            
+                                            Text(day.capitalized)
+                                                .font(.system(size: 13))
+                                                .frame(maxWidth: .infinity)
+                                                .padding(.vertical, 12)
+                                                .foregroundColor(index != -1 ? .white : .primary)
+                                                .background {
+                                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                        .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
+                                                }
+                                                .onTapGesture {
+                                                    isFocused = false
+                                                    UIImpactFeedbackGenerator(style: .medium)
+                                                        .impactOccurred()
+                                                    withAnimation {
+                                                        if index != -1{
+                                                            viewModel.weekDays.remove(at: index)
+                                                        } else {
+                                                            viewModel.weekDays.append(day)
+                                                        }
                                                     }
                                                 }
-                                            }
+                                        }
                                     }
+                                    .padding(.top, 15)
                                 }
-                                .padding(.top,15)
-                            }
-                            
-                            Divider()
-                                .padding(.vertical, 10)
-                            
-                            // Hiding if Notification access is rejected
-                            RemainderSwitchView()
-                                .padding()
-                                .onTapGesture {
-                                    isFocused = false
-                                }
-                            
-                            TimeView()
-                            
-                            Color.clear
-                                .frame(height: .zero)
-                                .id(1)
-                        }
-                    }
-                    .scrollDismissesKeyboard(.interactively)
-                    .onChange(of: viewModel.remainderDates) { _ in
-                        withAnimation {
-                            value.scrollTo(1)
-                        }
-                    }
-                    .onChange(of: viewModel.isRemainderOn) { _ in
-                        withAnimation {
-                            viewModel.isRemainderOn ? value.scrollTo(1) : value.scrollTo(0)
-                        }
-                    }
-                    AddTimeButton()
-                        .onTapGesture {
-                            isFocused = false
-                        }
-                }
-            }
-            .animation(.easeInOut, value: viewModel.isRemainderOn)
-            .frame(maxHeight: .infinity, alignment: .top)
-            .padding()
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(viewModel.editHabit != nil ? "Edit schedule" : "New schedule")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        env.dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle")
-                    }
-                    .tint(.primary)
-                }
-                
-                // MARK: Delete Button
-                
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        viewModel.isShowDeleteAlert = true
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                    .tint(.red)
-                    .opacity(viewModel.editHabit == nil ? 0 : 1)
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        Task {
-                            if await viewModel.addHabbit(context: env.managedObjectContext) {
-                                env.dismiss()
+                                
+                                Divider()
+                                    .padding(.vertical, 10)
+                                
+                                // Hiding if Notification access is rejected
+                                RemainderSwitchView()
+                                    .padding()
+                                    .onTapGesture {
+                                        isFocused = false
+                                    }
+                                
+                                TimeView()
+                                
+                                Color.clear
+                                    .frame(height: .zero)
+                                    .id(1)
                             }
                         }
+                        .scrollDismissesKeyboard(.interactively)
+                        .onChange(of: viewModel.remainderDates) { _ in
+                            withAnimation {
+                                value.scrollTo(1)
+                            }
+                        }
+                        .onChange(of: viewModel.isRemainderOn) { _ in
+                            withAnimation {
+                                viewModel.isRemainderOn ? value.scrollTo(1) : value.scrollTo(0)
+                            }
+                        }
+                        AddTimeButton()
+                            .onTapGesture {
+                                isFocused = false
+                            }
                     }
-                    .tint(.primary)
-                    .disabled(!viewModel.doneStatus())
-                    .opacity(viewModel.doneStatus() ? 1 : 0.6)
+                }
+                .animation(.easeInOut, value: viewModel.isRemainderOn)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .padding()
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(viewModel.editHabit != nil ? "Edit schedule" : "New schedule")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            env.dismiss()
+                        } label: {
+                            Image(systemName: "xmark.circle")
+                        }
+                        .tint(.primary)
+                    }
+                    
+                    // MARK: Delete Button
+                    
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            viewModel.isShowDeleteAlert = true
+                        } label: {
+                            Image(systemName: "trash")
+                        }
+                        .tint(.red)
+                        .opacity(viewModel.editHabit == nil ? 0 : 1)
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            Task {
+                                if await viewModel.addHabbit(context: env.managedObjectContext) {
+                                    env.dismiss()
+                                }
+                            }
+                        }
+                        .tint(.primary)
+                        .disabled(!viewModel.doneStatus())
+                        .opacity(viewModel.doneStatus() ? 1 : 0.6)
+                    }
                 }
             }
         }
@@ -160,7 +166,7 @@ struct AddNewHabit: View {
                     Rectangle()
                         .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
-                        
+                    
                     ProgressView()
                 }
             }
@@ -194,7 +200,7 @@ struct AddNewHabit: View {
             .frame(maxWidth: .infinity,alignment: .leading)
             
             let isOnColor = viewModel.isRemainderOn ? Color(.green) : Color(.white)
-
+            
             
             Toggle(isOn: $viewModel.isRemainderOn) {}
                 .labelsHidden()
@@ -310,6 +316,7 @@ struct AddNewHabit: View {
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         withAnimation(.easeInOut) {
                             isFocused = false
+                            guard let _ = viewModel.remainderDates[safe: forIndex] else { return }
                             viewModel.remainderDates.remove(at: forIndex)
                         }
                     } label: {

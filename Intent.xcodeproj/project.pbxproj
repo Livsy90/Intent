@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
 		D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
 		D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */,
 				D655209429115ACE0085AA6F /* View+Adds.swift */,
+				D618617229130B2300CCFBEE /* Collection+Adds.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */,
 				D6EEDC7D2912D19F001D3689 /* TimerViewModel.swift in Sources */,
 				D6694C3A290BACBD00429779 /* ContentView.swift in Sources */,
+				D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */,
 				D6694C38290BACBD00429779 /* IntentApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

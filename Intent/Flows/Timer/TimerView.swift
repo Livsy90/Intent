@@ -195,11 +195,6 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .background{
-                    Capsule()
-                        .fill(.white.opacity(0.07))
-                        .frame(width: 80, height: 50, alignment: .center)
-                }
                 
                 Menu("\(viewModel.minutes) min") {
                     ContextMenuOptions(maxValue: 60, hint: "min") { value in
@@ -209,11 +204,6 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .background{
-                    Capsule()
-                        .fill(.white.opacity(0.07))
-                        .frame(width: 80, height: 50, alignment: .center)
-                }
                 
                 Menu("\(viewModel.seconds) sec") {
                     ContextMenuOptions(maxValue: 60, hint: "sec") { value in
@@ -223,11 +213,6 @@ struct TimerView: View {
                 .font(.system(size: 14))
                 .fontWeight(.semibold)
                 .foregroundColor(.white.opacity(0.5))
-                .background{
-                    Capsule()
-                        .fill(.white.opacity(0.07))
-                        .frame(width: 80, height: 50, alignment: .center)
-                }
             }
             .padding(.top, 20)
             
