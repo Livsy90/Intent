@@ -32,7 +32,7 @@ struct Home: View {
                     }
                 }
                 .padding(.bottom, 10)
-                .fullScreenCover(isPresented: $viewModel.isShowTimer) {
+                .sheet(isPresented: $viewModel.isShowTimer) {
                 } content: {
                     router?.timerScreen()
                 }

@@ -12,7 +12,7 @@ struct TimerView: View {
     @ObservedObject var viewModel: TimerViewModel = .init()
     
     var body: some View {
-        VStack{
+        VStack {
             Text("Timer")
                 .font(.title2.bold())
                 .foregroundColor(.white)
@@ -219,7 +219,7 @@ struct TimerView: View {
             Button {
                 viewModel.startTimer()
             } label: {
-                Text("Save")
+                Text("Start")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
