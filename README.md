@@ -1,9 +1,9 @@
 # Intent
 
-<img src="https://github.com/Livsy90/Intent/blob/main/1.gif" height="400" />
+## Habit tracker
 
-![](https://github.com/Livsy90/Intent/blob/main/1.gif | height=100)
+<img src="https://github.com/Livsy90/Intent/blob/main/1.gif" height="700" />
 
-![](https://github.com/Livsy90/Intent/blob/main/3.gif | height=100)
+<img src="https://github.com/Livsy90/Intent/blob/main/3.gif" height="700" />
 
-![](https://github.com/Livsy90/Intent/blob/main/2.gif | )
+<img src="https://github.com/Livsy90/Intent/blob/main/2.gif" height="700" />
