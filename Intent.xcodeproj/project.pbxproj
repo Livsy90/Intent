@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D61555CA29154A440045AAE2 /* notificationSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D61555C929154A440045AAE2 /* notificationSound.wav */; };
 		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D61555C929154A440045AAE2 /* notificationSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = notificationSound.wav; sourceTree = "<group>"; };
 		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
@@ -101,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D61555C829154A360045AAE2 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				D61555C929154A440045AAE2 /* notificationSound.wav */,
+			);
+			path = Sound;
+			sourceTree = "<group>";
+		};
 		D61A3D75291130B300B5C0E4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +172,7 @@
 		D6694C36290BACBD00429779 /* Intent */ = {
 			isa = PBXGroup;
 			children = (
+				D61555C829154A360045AAE2 /* Sound */,
 				D61A3D75291130B300B5C0E4 /* Extensions */,
 				D671335D290D982600AE460C /* Models */,
 				D62875D4290C53780022B437 /* Flows */,
@@ -374,6 +385,7 @@
 			files = (
 				D6694C3F290BACBF00429779 /* Preview Assets.xcassets in Resources */,
 				D6694C3C290BACBF00429779 /* Assets.xcassets in Resources */,
+				D61555CA29154A440045AAE2 /* notificationSound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

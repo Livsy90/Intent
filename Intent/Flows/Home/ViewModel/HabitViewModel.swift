@@ -166,7 +166,7 @@ final class HabitViewModel: ObservableObject {
         let content = UNMutableNotificationContent()
         content.title = "Intent"
         content.subtitle = remainderText
-        content.sound = UNNotificationSound.default
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "notificationSound.wav"))
         
         // Scheduled Ids
         var notificationIDs: [String] = []
