@@ -44,9 +44,7 @@ final class HabitViewModel: ObservableObject {
     // MARK: Adding Habit to Database
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
-        
-        // MARK: Editing Data
-        
+        guard var total = try? await notificationsCount() else { return false }
         let isEdit: Bool
         var habit: Habit
         
@@ -54,7 +52,6 @@ final class HabitViewModel: ObservableObject {
             habit = editHabit
             isEdit = true
             
-            // Removing All Pending Notifications
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
         } else {
             habit = Habit(context: context)
@@ -62,8 +59,7 @@ final class HabitViewModel: ObservableObject {
         }
         
         let newCount = (remainderDates.count * weekDays.count)
-        var total = UserDefaults.standard.notificationsCount
-                
+        
         if isEdit {
             total -= (editHabit?.notificationDates?.count ?? 0) * (editHabit?.weekDays?.count ?? 0)
         }
@@ -71,11 +67,8 @@ final class HabitViewModel: ObservableObject {
         total += newCount
         
         isLoading = true
-        UserDefaults.standard.notificationsCount = total
         
         guard total < 65 else {
-            total -= newCount
-            UserDefaults.standard.notificationsCount = total
             isFull = true
             isLoading = false
             return false
@@ -91,9 +84,6 @@ final class HabitViewModel: ObservableObject {
         habit.notificationDates = remainderDates
         
         if isRemainderOn {
-            
-            // MARK: Scheduling Notifications
-            
             if let ids = try? await scheduleNotification() {
                 habit.notificationIDs = ids
                 if let _ = try? context.save() {
@@ -103,9 +93,6 @@ final class HabitViewModel: ObservableObject {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
             }
         } else {
-            
-            // MARK: Adding Data
-            
             if let _ = try? context.save() {
                 return true
             }
@@ -118,13 +105,7 @@ final class HabitViewModel: ObservableObject {
     
     func deleteHabit(context: NSManagedObjectContext) -> Bool {
         if let editHabit = editHabit {
-            if editHabit.isRemainderOn {
-                var total = UserDefaults.standard.notificationsCount
-                total -= (editHabit.notificationDates?.count ?? 0) * (editHabit.weekDays?.count ?? 0)
-                UserDefaults.standard.notificationsCount = total
-                // Removing All Pending Notifications
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
-            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
             
             context.delete(editHabit)
             if let _ = try? context.save() {
@@ -174,6 +155,12 @@ final class HabitViewModel: ObservableObject {
     }
     
     // MARK: Adding Notifications
+    
+    private func notificationsCount() async throws -> Int {
+        let notificationCenter = UNUserNotificationCenter.current()
+        let notificationRequests = await notificationCenter.pendingNotificationRequests()
+        return notificationRequests.count
+    }
     
     private func scheduleNotification() async throws -> [String] {
         let content = UNMutableNotificationContent()

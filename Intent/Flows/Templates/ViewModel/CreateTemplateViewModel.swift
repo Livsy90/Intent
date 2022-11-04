@@ -45,23 +45,20 @@ final class CreateTemplateViewModel: ObservableObject {
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
         isLoading = true
+        guard var total = try? await notificationsCount() else { return false }
         let weekDays = Calendar.current.shortWeekdaySymbols
         let dates = datesBetween(startDate: startDate, endDate: endDate, step: step)
         
-        var total = UserDefaults.standard.notificationsCount
         let newCount = (dates.count * weekDays.count)
         total += newCount
-        UserDefaults.standard.notificationsCount = total
         
-        guard total < 65 else {
-            total -= newCount
-            UserDefaults.standard.notificationsCount = total
+        guard total < 64 else {
             isFull = true
             isLoading = false
             return false
         }
         
-        guard newCount < 65 else {
+        guard newCount < 64 else {
             isLoading = false
             isFull = true
             return false
@@ -84,8 +81,7 @@ final class CreateTemplateViewModel: ObservableObject {
             
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
         }
-        
-      return false
+        return false
     }
     
     // MARK: Done Button Status
@@ -125,6 +121,12 @@ final class CreateTemplateViewModel: ObservableObject {
     }
     
     // MARK: Adding Notifications
+    
+    private func notificationsCount() async throws -> Int {
+        let notificationCenter = UNUserNotificationCenter.current()
+        let notificationRequests = await notificationCenter.pendingNotificationRequests()
+        return notificationRequests.count
+    }
     
     private func scheduleNotification(dates: [Date]) async throws -> [String] {
         let content = UNMutableNotificationContent()

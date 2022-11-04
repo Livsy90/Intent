@@ -167,7 +167,7 @@ struct AddNewHabit: View {
                         .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
                     
-                    ProgressView()
+                    LoadingIndicatorView(showPopup: $viewModel.isLoading)
                 }
             }
         }
@@ -181,6 +181,9 @@ struct AddNewHabit: View {
                     env.dismiss()
                 }
             }
+        }
+        .onAppear {
+            viewModel.isLoading = false
         }
     }
     

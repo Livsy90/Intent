@@ -49,7 +49,7 @@ struct Home: View {
                 }
                 .padding(.bottom, 10)
                 .fullScreenCover(isPresented: $viewModel.createTemplate) {
-                    viewModel.isLoading = false
+                    viewModel.reset()
                 } content: {
                     router?.createTemplateScreen()
                 }
@@ -89,9 +89,6 @@ struct Home: View {
             startAnimation = true
         }
         .fullScreenCover(isPresented: $viewModel.addNewHabit) {
-            
-            // MARK: Erasing All Existing Content
-            viewModel.isLoading = false
             viewModel.reset()
         } content: {
             router?.addHabitScreen(viewModel: viewModel)

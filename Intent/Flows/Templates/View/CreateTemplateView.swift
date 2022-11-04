@@ -137,12 +137,15 @@ struct CreateTemplateView: View {
                         .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
                         
-                    ProgressView()
+                    LoadingIndicatorView(showPopup: $viewModel.isLoading)
                 }
             }
         }
         .alert("I can only schedule 64 notifications. Please edit this template or the previous ones", isPresented: $viewModel.isFull) {
             Button("OK", role: .cancel) { }
+        }
+        .onAppear {
+            viewModel.isLoading = false
         }
     }
     

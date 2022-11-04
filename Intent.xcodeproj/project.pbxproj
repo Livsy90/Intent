@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
-		D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
 		D6694C38290BACBD00429779 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C37290BACBD00429779 /* IntentApp.swift */; };
@@ -29,6 +28,7 @@
 		D6F11B8E290EC23B00E80897 /* CreateTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F11B8D290EC23A00E80897 /* CreateTemplateView.swift */; };
 		D6F11B92290EE59200E80897 /* CreateTemplateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F11B91290EE59200E80897 /* CreateTemplateViewModel.swift */; };
 		D6F11B94290EE5D800E80897 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F11B93290EE5D800E80897 /* Step.swift */; };
+		D6FC896E29152E1B0060B772 /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FC896D29152E1B0060B772 /* LoadingIndicatorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,6 @@
 
 /* Begin PBXFileReference section */
 		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
-		D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
 		D6694C34290BACBD00429779 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +73,7 @@
 		D6F11B8D290EC23A00E80897 /* CreateTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTemplateView.swift; sourceTree = "<group>"; };
 		D6F11B91290EE59200E80897 /* CreateTemplateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTemplateViewModel.swift; sourceTree = "<group>"; };
 		D6F11B93290EE5D800E80897 /* Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step.swift; sourceTree = "<group>"; };
+		D6FC896D29152E1B0060B772 /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,6 @@
 		D61A3D75291130B300B5C0E4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D61A3D76291130C400B5C0E4 /* UserDefaults+Adds.swift */,
 				D655209429115ACE0085AA6F /* View+Adds.swift */,
 				D618617229130B2300CCFBEE /* Collection+Adds.swift */,
 			);
@@ -114,6 +113,7 @@
 		D62875D4290C53780022B437 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				D6FC896C29152E070060B772 /* LoadingIndicatorView */,
 				D6EEDC7B2912D190001D3689 /* Timer */,
 				D6F11B8C290EC21D00E80897 /* Templates */,
 				D62875D5290C53830022B437 /* Home */,
@@ -260,6 +260,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		D6FC896C29152E070060B772 /* LoadingIndicatorView */ = {
+			isa = PBXGroup;
+			children = (
+				D6FC896D29152E1B0060B772 /* LoadingIndicatorView.swift */,
+			);
+			path = LoadingIndicatorView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -395,6 +403,7 @@
 				D6694C44290BACBF00429779 /* Intent.xcdatamodeld in Sources */,
 				D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */,
 				D6F11B8E290EC23B00E80897 /* CreateTemplateView.swift in Sources */,
+				D6FC896E29152E1B0060B772 /* LoadingIndicatorView.swift in Sources */,
 				D6F11B94290EE5D800E80897 /* Step.swift in Sources */,
 				D6EEDC7F2912D201001D3689 /* TimerView.swift in Sources */,
 				D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */,
@@ -402,7 +411,6 @@
 				D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */,
 				D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */,
 				D655209529115ACE0085AA6F /* View+Adds.swift in Sources */,
-				D61A3D77291130C400B5C0E4 /* UserDefaults+Adds.swift in Sources */,
 				D6EEDC7D2912D19F001D3689 /* TimerViewModel.swift in Sources */,
 				D6694C3A290BACBD00429779 /* ContentView.swift in Sources */,
 				D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */,
