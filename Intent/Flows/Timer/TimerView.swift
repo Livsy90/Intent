@@ -32,7 +32,6 @@ struct TimerView: View {
                 
                 VStack(spacing: 15) {
                     
-                    
                     ZStack {
                         Circle()
                             .fill(.purple.opacity(0.3))
@@ -44,7 +43,7 @@ struct TimerView: View {
                         
                         // MARK: Shadow
                         Circle()
-                            .stroke(Color(Colors.Card.plum.rawValue), lineWidth: 5)
+                            .stroke(Colors.Card.plum.color, lineWidth: 5)
                             .blur(radius: 15)
                             .padding(-2)
                         
@@ -53,14 +52,14 @@ struct TimerView: View {
                         
                         Circle()
                             .trim(from: 0, to: viewModel.progress)
-                            .stroke(Color(Colors.Card.plum.rawValue).opacity(0.7),lineWidth: 10)
+                            .stroke(Colors.Card.plum.color.opacity(0.7),lineWidth: 10)
                         
                         // MARK: Knob
                         GeometryReader { proxy in
                             let size = proxy.size
                             
                             Circle()
-                                .fill(Color(Colors.Card.plum.rawValue))
+                                .fill(Colors.Card.plum.color)
                                 .frame(width: 30, height: 30)
                                 .overlay(content: {
                                     Circle()
@@ -114,7 +113,7 @@ struct TimerView: View {
                                         lineWidth: 2
                                     )
                             }
-                            .shadow(color: Color(Colors.Card.plum.rawValue), radius: 8, x: 0, y: 0)
+                            .shadow(color: Colors.Card.plum.color, radius: 8, x: 0, y: 0)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -280,63 +279,5 @@ struct TimerView: View {
                 onClick(value)
             }
         }
-    }
-}
-
-import SwiftUI
-
-struct InteractiveBackgroundView: View {
-        
-    @GestureState var location: CGPoint = .zero
-    
-    var body: some View {
-        GeometryReader { proxy in
-            let size = proxy.size
-            let width = (size.width / 10)
-            let itemCount = Int((size.height / width).rounded()) * 10
-
-            LinearGradient(colors: [
-                Colors.Card.plum.color, Colors.Card.blueRose.color, .indigo, .pink, Colors.Card.plum.color
-            ], startPoint: .topLeading, endPoint: .bottomTrailing)
-            .mask {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 10), spacing: 0) {
-                    ForEach(0..<itemCount, id: \.self) { _ in
-                        GeometryReader { innerProxy in
-                            let rect = innerProxy.frame(in: .named("GESTURE"))
-                            let scale = itemScale(rect: rect, size: size)
-                            
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(.orange)
-                                .scaleEffect(scale)
-                        }
-                        .padding(5)
-                        .frame(height: width)
-                    }
-                }
-            }
-        }
-        .padding(15)
-        .gesture(
-            DragGesture(minimumDistance: 0)
-                .updating($location, body: { value, out, _ in
-                    out = value.location
-                })
-        )
-        .coordinateSpace(name: "GESTURE")
-        .preferredColorScheme(.dark)
-        .animation(.easeInOut, value: location == .zero)
-    }
-    
-    private func itemScale(rect: CGRect,size: CGSize) -> CGFloat{
-        let a = location.x - rect.midX
-        let b = location.y - rect.midY
-        
-        let root = sqrt((a * a) + (b * b))
-        let diagonalValue = sqrt((size.width * size.width) + (size.height * size.height))
-        
-        let scale = root / (diagonalValue / 2)
-        let modifiedScale = location == .zero ? 1 : (1 - scale)
-                
-        return modifiedScale > 0 ? modifiedScale : 0.001
     }
 }

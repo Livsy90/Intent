@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
+		D64DD2DC2916B241009682AC /* InteractiveBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD2DB2916B241009682AC /* InteractiveBackgroundView.swift */; };
 		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
 		D6694C38290BACBD00429779 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C37290BACBD00429779 /* IntentApp.swift */; };
 		D6694C3A290BACBD00429779 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C39290BACBD00429779 /* ContentView.swift */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		D64DD2DB2916B241009682AC /* InteractiveBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveBackgroundView.swift; sourceTree = "<group>"; };
 		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
 		D6694C34290BACBD00429779 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6694C37290BACBD00429779 /* IntentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentApp.swift; sourceTree = "<group>"; };
@@ -149,6 +151,22 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		D64DD2D92916B228009682AC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D64DD2DA2916B230009682AC /* Views */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		D64DD2DA2916B230009682AC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D64DD2DB2916B241009682AC /* InteractiveBackgroundView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D6694C2B290BACBC00429779 = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +190,7 @@
 		D6694C36290BACBD00429779 /* Intent */ = {
 			isa = PBXGroup;
 			children = (
+				D64DD2D92916B228009682AC /* Shared */,
 				D61555C829154A360045AAE2 /* Sound */,
 				D61A3D75291130B300B5C0E4 /* Extensions */,
 				D671335D290D982600AE460C /* Models */,
@@ -420,6 +439,7 @@
 				D6EEDC7F2912D201001D3689 /* TimerView.swift in Sources */,
 				D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */,
 				D6F11B92290EE59200E80897 /* CreateTemplateViewModel.swift in Sources */,
+				D64DD2DC2916B241009682AC /* InteractiveBackgroundView.swift in Sources */,
 				D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */,
 				D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */,
 				D655209529115ACE0085AA6F /* View+Adds.swift in Sources */,
