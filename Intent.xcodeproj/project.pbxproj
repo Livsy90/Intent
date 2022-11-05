@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D61555CA29154A440045AAE2 /* notificationSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D61555C929154A440045AAE2 /* notificationSound.wav */; };
 		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D655209529115ACE0085AA6F /* View+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655209429115ACE0085AA6F /* View+Adds.swift */; };
@@ -21,6 +20,7 @@
 		D6694C58290BACC000429779 /* IntentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C57290BACC000429779 /* IntentUITests.swift */; };
 		D6694C5A290BACC000429779 /* IntentUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6694C59290BACC000429779 /* IntentUITestsLaunchTests.swift */; };
 		D671335F290D983100AE460C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D671335E290D983100AE460C /* Color.swift */; };
+		D68D6D3D29162C6400655C73 /* notificationSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = D68D6D3C29162C6300655C73 /* notificationSound.wav */; };
 		D6B63DFB290BC1F80037DC5B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFA290BC1F80037DC5B /* Home.swift */; };
 		D6B63DFD290BD7360037DC5B /* HabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */; };
 		D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */; };
@@ -50,7 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D61555C929154A440045AAE2 /* notificationSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = notificationSound.wav; sourceTree = "<group>"; };
 		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D655209429115ACE0085AA6F /* View+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Adds.swift"; sourceTree = "<group>"; };
@@ -67,6 +66,7 @@
 		D6694C57290BACC000429779 /* IntentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITests.swift; sourceTree = "<group>"; };
 		D6694C59290BACC000429779 /* IntentUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D671335E290D983100AE460C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		D68D6D3C29162C6300655C73 /* notificationSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = notificationSound.wav; sourceTree = "<group>"; };
 		D6B63DFA290BC1F80037DC5B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		D6B63DFC290BD7360037DC5B /* HabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewModel.swift; sourceTree = "<group>"; };
 		D6B63DFE290BD7880037DC5B /* AddNewHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHabit.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		D61555C829154A360045AAE2 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				D61555C929154A440045AAE2 /* notificationSound.wav */,
+				D68D6D3C29162C6300655C73 /* notificationSound.wav */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -385,7 +385,7 @@
 			files = (
 				D6694C3F290BACBF00429779 /* Preview Assets.xcassets in Resources */,
 				D6694C3C290BACBF00429779 /* Assets.xcassets in Resources */,
-				D61555CA29154A440045AAE2 /* notificationSound.wav in Resources */,
+				D68D6D3D29162C6400655C73 /* notificationSound.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

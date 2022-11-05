@@ -19,7 +19,11 @@ struct AddNewHabit: View {
         NavigationStack {
             
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [Colors.Background.semiDark, Colors.Background.dark, Colors.Background.light]), startPoint: .top, endPoint: .bottom)
+                LinearGradient(gradient: Gradient(colors: [.pink, Colors.Card.plum.color, Colors.Card.blueRose.color]), startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+                
+                Rectangle()
+                    .fill(.ultraThickMaterial)
                     .ignoresSafeArea()
                 
                 ScrollViewReader { value in
@@ -60,7 +64,7 @@ struct AddNewHabit: View {
                                                 .foregroundColor(index != -1 ? .white : .primary)
                                                 .background {
                                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                        .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light)
+                                                        .fill(index != -1 ? Color(viewModel.habitColor) : Colors.Background.light.opacity(0.5))
                                                 }
                                                 .onTapGesture {
                                                     isFocused = false
@@ -294,13 +298,13 @@ struct AddNewHabit: View {
                 .focused($isFocused)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             
             TextField("Remainder text", text: $viewModel.remainderText)
                 .focused($isFocused)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             
         }
     }
@@ -399,15 +403,17 @@ struct AddNewHabit: View {
                     }
                 }
             
-            DatePicker.init("", selection: $viewModel.remainderDates[forIndex], displayedComponents: [.hourAndMinute])
-                .datePickerStyle(.wheel)
-                .labelsHidden()
-                .padding()
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Colors.Background.dark)
-                }
-                .padding()
+            if let _ = viewModel.remainderDates[safe: forIndex] {
+                DatePicker.init("", selection: $viewModel.remainderDates[forIndex], displayedComponents: [.hourAndMinute])
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Colors.Background.dark)
+                    }
+                    .padding()
+            }
         }
     }
     
@@ -445,8 +451,6 @@ struct AddNewHabit_Previews: PreviewProvider {
     }
 }
 
-// MARK: Custom Blur View
-// With The Help of UiVisualEffect View
 struct CustomBlurView: UIViewRepresentable{
     var effect: UIBlurEffect.Style
     var onChange: (UIVisualEffectView)->()

@@ -217,7 +217,9 @@ struct TimerView: View {
             .padding(.top, 20)
             
             Button {
-                viewModel.startTimer()
+                Task {
+                    await viewModel.startTimer()
+                }
             } label: {
                 Text("Start")
                     .font(.title3)
@@ -261,6 +263,9 @@ struct TimerView: View {
                 .fill(Colors.Background.dark)
                 .ignoresSafeArea()
         }
+        .alert("I can only schedule 64 notifications. Now there are 64 of them. Therefore, the timer will not send notifications", isPresented: $viewModel.isShowWarning) {
+            Button("OK", role: .cancel) { }
+        }
     }
         
     @ViewBuilder
@@ -295,7 +300,7 @@ struct InteractiveBackgroundView: View {
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .mask {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 10), spacing: 0) {
-                    ForEach(0..<itemCount,id: \.self) { _ in
+                    ForEach(0..<itemCount, id: \.self) { _ in
                         GeometryReader { innerProxy in
                             let rect = innerProxy.frame(in: .named("GESTURE"))
                             let scale = itemScale(rect: rect, size: size)

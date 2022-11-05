@@ -91,7 +91,7 @@ final class CreateTemplateViewModel: ObservableObject {
     }
     
     private func requestNotificationAccess() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .alert]) { status, _ in
             DispatchQueue.main.async {
                 self.notificationAccess = status
             }

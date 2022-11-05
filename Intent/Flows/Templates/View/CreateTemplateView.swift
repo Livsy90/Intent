@@ -18,7 +18,11 @@ struct CreateTemplateView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [Colors.Background.semiDark, Colors.Background.dark, Colors.Background.light]), startPoint: .top, endPoint: .bottom)
+                LinearGradient(gradient: Gradient(colors: [.pink, Colors.Card.plum.color, Colors.Card.blueRose.color]), startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+                
+                Rectangle()
+                    .fill(.ultraThickMaterial)
                     .ignoresSafeArea()
                 
                 ScrollViewReader { value in
@@ -28,13 +32,13 @@ struct CreateTemplateView: View {
                                 .focused($isFocused)
                                 .padding(.horizontal)
                                 .padding(.vertical, 10)
-                                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                             
                             TextField("Remainder text", text: $viewModel.remainderText)
                                 .focused($isFocused)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 12)
-                                .background(Colors.Background.light, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
                             
                             Divider()
                             
@@ -52,17 +56,16 @@ struct CreateTemplateView: View {
                                 .onTapGesture {
                                     isFocused = false
                                 }
-                            
-                            Divider()
-                            
+                                                        
                             Text("Repeat every")
+                                .padding(.vertical, 8)
                             
                             Picker("Repeat every", selection: $viewModel.step) {
                                 ForEach(Step.allCases, id: \.self) {
                                     Text($0.rawValue.lowercased())
                                 }
                             }
-                            .frame(width: 150)
+                            .frame(width: 120, height: 44)
                             .padding(.horizontal)
                             .accentColor(Color(.label))
                             .background {
@@ -179,68 +182,42 @@ struct CreateTemplateView: View {
     @ViewBuilder
     private func RemainderTimeView() -> some View {
         VStack {
-            HStack(spacing: 12) {
-                Text("Start")
-                    .frame(width: 60, height: 20)
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                    .background {
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(
-                                .linearGradient(colors: [
-                                    .white.opacity(0.25),
-                                    .white.opacity(0.05),
-                                    .clear
-                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                            .blur(radius: 5)
-                        
-                        // MARK: Borders
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .stroke(
-                                .linearGradient(colors: [
-                                    .white.opacity(0.6),
-                                    .clear,
-                                    .white.opacity(0.2),
-                                    .white.opacity(0.5)
-                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
-                                lineWidth: 2
-                            )
-                        
-                    }
-                
-                Label {
-                    Text(viewModel.startDate.formatted(date: .omitted, time: .shortened))
-                } icon: {
-                    Image(systemName: "clock")
-                }
-                .frame(width: 130, height: 20)
-                .padding(.horizontal, 10)
+            Text("Start")
+                .frame(width: 60, height: 20)
+                .padding(.horizontal)
                 .padding(.vertical, 12)
-                .background {
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .fill(
-                            .linearGradient(colors: [
-                                .white.opacity(0.25),
-                                .white.opacity(0.05),
-                                .clear
-                            ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
-                        .blur(radius: 5)
-                    
-                    // MARK: Borders
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .stroke(
-                            .linearGradient(colors: [
-                                .white.opacity(0.6),
-                                .clear,
-                                .white.opacity(0.2),
-                                .white.opacity(0.5)
-                            ], startPoint: .topLeading, endPoint: .bottomTrailing),
-                            lineWidth: 2
-                        )
-                    
-                }
+            
+            Label {
+                Text(viewModel.startDate.formatted(date: .omitted, time: .shortened))
+            } icon: {
+                Image(systemName: "clock")
+            }
+            .frame(width: 130, height: 20)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background {
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(
+                        .linearGradient(colors: [
+                            .white.opacity(0.25),
+                            .white.opacity(0.05),
+                            .clear
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .blur(radius: 5)
+                
+                // MARK: Borders
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .stroke(
+                        .linearGradient(colors: [
+                            .white.opacity(0.6),
+                            .clear,
+                            .white.opacity(0.2),
+                            .white.opacity(0.5)
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 2
+                    )
+                
             }
             .onTapGesture {
                 withAnimation {
@@ -248,67 +225,41 @@ struct CreateTemplateView: View {
                 }
             }
             
-            HStack(spacing: 12) {
-                Text("End")
-                    .frame(width: 60, height: 20)
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                    .background {
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(
-                                .linearGradient(colors: [
-                                    .white.opacity(0.25),
-                                    .white.opacity(0.05),
-                                    .clear
-                                ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                            .blur(radius: 5)
-                        
-                        // MARK: Borders
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .stroke(
-                                .linearGradient(colors: [
-                                    .white.opacity(0.6),
-                                    .clear,
-                                    .white.opacity(0.2),
-                                    .white.opacity(0.5)
-                                ], startPoint: .topLeading, endPoint: .bottomTrailing),
-                                lineWidth: 2
-                            )
-                        
-                    }
-                Label {
-                    Text(viewModel.endDate.formatted(date: .omitted, time: .shortened))
-                } icon: {
-                    Image(systemName: "clock")
-                }
-                .frame(width: 130, height: 20)
-                .padding(.horizontal, 10)
+            Text("End")
+                .frame(width: 60, height: 20)
+                .padding(.horizontal)
                 .padding(.vertical, 12)
-                .background {
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .fill(
-                            .linearGradient(colors: [
-                                .white.opacity(0.25),
-                                .white.opacity(0.05),
-                                .clear
-                            ], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
-                        .blur(radius: 5)
-                    
-                    // MARK: Borders
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .stroke(
-                            .linearGradient(colors: [
-                                .white.opacity(0.6),
-                                .clear,
-                                .white.opacity(0.2),
-                                .white.opacity(0.5)
-                            ], startPoint: .topLeading, endPoint: .bottomTrailing),
-                            lineWidth: 2
-                        )
-                    
-                }
+            Label {
+                Text(viewModel.endDate.formatted(date: .omitted, time: .shortened))
+            } icon: {
+                Image(systemName: "clock")
+            }
+            .frame(width: 130, height: 20)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
+            .background {
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(
+                        .linearGradient(colors: [
+                            .white.opacity(0.25),
+                            .white.opacity(0.05),
+                            .clear
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .blur(radius: 5)
+                
+                // MARK: Borders
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .stroke(
+                        .linearGradient(colors: [
+                            .white.opacity(0.6),
+                            .clear,
+                            .white.opacity(0.2),
+                            .white.opacity(0.5)
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 2
+                    )
+                
             }
             .onTapGesture {
                 withAnimation {
