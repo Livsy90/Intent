@@ -40,8 +40,6 @@ final class HabitViewModel: ObservableObject {
     init() {
         requestNotificationAccess()
     }
-
-    // MARK: Adding Habit to Database
     
     func addHabbit(context: NSManagedObjectContext) async -> Bool {
         guard var total = try? await notificationsCount() else { return false }
@@ -100,9 +98,7 @@ final class HabitViewModel: ObservableObject {
         
       return false
     }
-    
-    // MARK: Deleting Habit From Database
-    
+        
     func deleteHabit(context: NSManagedObjectContext) -> Bool {
         if let editHabit = editHabit {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: editHabit.notificationIDs ?? [])
@@ -115,9 +111,7 @@ final class HabitViewModel: ObservableObject {
         
         return false
     }
-    
-    // MARK: Restoring Edit Data
-    
+        
     func restoreEditData() {
         if let editHabit = editHabit {
             title = editHabit.title ?? ""
@@ -128,9 +122,7 @@ final class HabitViewModel: ObservableObject {
             remainderText = editHabit.remainderText ?? ""
         }
     }
-    
-    // MARK: Erasing Content
-    
+        
     func reset() {
         title = ""
         habitColor = Colors.Card.raspberrySunset.rawValue
@@ -142,8 +134,6 @@ final class HabitViewModel: ObservableObject {
         timePickerIndex = .zero
     }
     
-    // MARK: Done Button Status
-    
     func doneStatus() -> Bool {
         let remainderStatus = isRemainderOn ? remainderText == "" : false
         
@@ -154,7 +144,14 @@ final class HabitViewModel: ObservableObject {
         return false
     }
     
-    // MARK: Adding Notifications
+    func dateString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        
+        return formatter.string(from: date)
+    }
+    
+    // MARK: Notifications
     
     private func notificationsCount() async throws -> Int {
         let notificationCenter = UNUserNotificationCenter.current()

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D61841CC291951F40004977D /* ScaledButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61841CB291951F40004977D /* ScaledButtonStyle.swift */; };
 		D618617329130B2300CCFBEE /* Collection+Adds.swift in Sources */ = {isa = PBXBuildFile; fileRef = D618617229130B2300CCFBEE /* Collection+Adds.swift */; };
 		D64407A2290D3A0F0081ADB4 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */; };
 		D64DD2DC2916B241009682AC /* InteractiveBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DD2DB2916B241009682AC /* InteractiveBackgroundView.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D61841CB291951F40004977D /* ScaledButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledButtonStyle.swift; sourceTree = "<group>"; };
 		D618617229130B2300CCFBEE /* Collection+Adds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Adds.swift"; sourceTree = "<group>"; };
 		D64407A1290D3A0F0081ADB4 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		D64DD2DB2916B241009682AC /* InteractiveBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveBackgroundView.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			children = (
 				D671335E290D983100AE460C /* Color.swift */,
 				D6F11B93290EE5D800E80897 /* Step.swift */,
+				D61841CB291951F40004977D /* ScaledButtonStyle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				D6F11B8E290EC23B00E80897 /* CreateTemplateView.swift in Sources */,
 				D6FC896E29152E1B0060B772 /* LoadingIndicatorView.swift in Sources */,
 				D6F11B94290EE5D800E80897 /* Step.swift in Sources */,
+				D61841CC291951F40004977D /* ScaledButtonStyle.swift in Sources */,
 				D6EEDC7F2912D201001D3689 /* TimerView.swift in Sources */,
 				D6B63DFF290BD7880037DC5B /* AddNewHabit.swift in Sources */,
 				D6F11B92290EE59200E80897 /* CreateTemplateViewModel.swift in Sources */,
